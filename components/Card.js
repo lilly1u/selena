@@ -1,16 +1,16 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 
-export default ({image, color}) => {
+export default ({title, instructor, image, color}) => {
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.card}>
                 <View style={[styles.square, {backgroundColor: color}]}>
                     <Image source={image} style={{width:145, height:144}}/>
                 </View>
-                <View>
-                    <Text style={styles.title}>SELENA Curriculum Title</Text>
-                    <Text style={styles.name}>Instructor Name</Text>
+                <View style={{width: 145, height: 50}}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.name}>{instructor}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -20,7 +20,6 @@ export default ({image, color}) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        marginBottom: 20,
         marginTop: 20,
     },
     card: {
@@ -35,7 +34,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 20,
-        marginBottom: 20
+        marginBottom: 20,
+        position: 'relative'
     },
     square: {
         width: 145,
