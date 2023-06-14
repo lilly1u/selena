@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+
 import Button from '../components/Button';
+import Input from '../components/Input';
 
 const LoginScreen = ({setIsLoggedIn}) => {
     const handleLogin = () => {
@@ -30,24 +32,6 @@ const LoginScreen = ({setIsLoggedIn}) => {
       </SafeAreaView>
     );
   }
-  
-const Input = ({title, icon}) => {
-  const [text, setText] = useState('');
-  return(
-    <View style={styles.inputContainer}>
-        <Image
-            style={styles.logo}
-            source={icon}
-          />
-        <TextInput
-          style={styles.input}
-          placeholder={title}
-          placeholderTextColor='#8E8E8E'
-          onChangeText={(text) => setText(text)}
-        />
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -56,16 +40,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-  },
-  inputContainer: {
-    width: 250,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#8E8E8E',
-    marginBottom: 15,
-    flexDirection:'row',
-    alignItems: 'flex-start',
   },
   title: {
     color: '#FFC700',
@@ -78,15 +52,6 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 150/2,
     margin: 20,
-  },
-  logo: {
-    width: 24,
-    height: 24,
-    margin: 13,
-  },
-  input: {
-    width: 250,
-    height: 50,
   },
   text: {
     color: '#202020',
