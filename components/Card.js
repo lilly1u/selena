@@ -6,7 +6,7 @@ export default ({image, color}) => {
         <TouchableOpacity style={styles.container}>
             <View style={styles.card}>
                 <View style={[styles.square, {backgroundColor: color}]}>
-                    <Image source={image}/>
+                    <Image source={image} style={{width:145, height:144}}/>
                 </View>
                 <View>
                     <Text style={styles.title}>SELENA Curriculum Title</Text>
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         alignItems: 'center',
         justifyContent: 'center',
+        marginRight: 20,
+        marginBottom: 20
     },
     square: {
         width: 145,

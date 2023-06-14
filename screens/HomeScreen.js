@@ -1,25 +1,33 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView } from 'react-native';
 
 import Header from '../components/Header';
 import Card from '../components/Card';
-import InputField from '../components/InputField';
 import Button from '../components/Button';
 
 
 const HomeScreen = () => {
     return (
     <SafeAreaView style={styles.container}>
-        <View style={{margin: 20}}>
-            <Header text={"Hello!"}/>
-            <View style={styles.box}>
-                <View style={{width: 256, height: 195, margin: 10}}>
-                    <Text style={{fontWeight: 600, fontSize: 32, color: '#FFC700'}}>Welcome to</Text>
-                    <Text style={{fontWeight: 600, fontSize: 32, color: '#8E8E8E'}}>Social Emotional Learning Enhancement Application</Text>
+        <ScrollView>
+            <View style={{margin: 20}}>
+                <Header text={"Hello Jane!"}/>
+                <View style={styles.box}>
+                    <Image source={require('../assets/welcome-illustration.png')} style={{resizeMode:'cover', position:'absolute', alignSelf:'flex-end'}}/>
+                    <Text style={styles.title}>Welcome to <Text style={{color: '#8E8E8E'}}>Social Emotional Learning Enhancement Application</Text></Text>
                 </View>
-                <Image source={require('./assets/welcome-illustration.png')}/>
+                <Text style={styles.subheading}>Recent</Text>
+                <View style={{alignItems:'flex-start', flexDirection:'row'}}>
+                    <Card image={require('../assets/test-image.png')} color={'#389C9C'}/>
+                    <Card image={require('../illustrations/Croods-The-Feedback.png')} color={'#F81CA0'}/>
+                </View>
+                <Text style={styles.subheading}>Reccomended</Text>
+                <View style={{alignItems:'flex-start', flexDirection:'row'}}>
+                    <Card image={require('../assets/test-image.png')} color={'#389C9C'}/>
+                    <Card image={require('../illustrations/Croods-The-Feedback.png')} color={'#F81CA0'}/>
+                </View>
+                <Button title='Contact Us!' buttonStyle={{width: 350, height: 50}}/>
             </View>
-            <Card image={require('../assets/test-image.png')} color={'#389C9C'}/>
-        </View>
+        </ScrollView>
     </SafeAreaView>
     );
 }
@@ -40,11 +48,23 @@ const styles = StyleSheet.create({
         shadowOpacity: .25,
         shadowRadius: 3,
         justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginTop: 10,
+        marginBottom: 10
     },
     title: {
-        fontWeight: 'bold',
+        fontWeight: 600,
         fontSize: 32,
+        width: 256, 
+        height: 195, 
+        margin: 10,
+        color: '#FFC700',
     },
+    subheading: {
+        color: '#202020',
+        fontSize: 15,
+        fontWeight: 600
+    }
 });
 
 export default HomeScreen;
