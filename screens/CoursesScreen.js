@@ -7,26 +7,22 @@ const DATA = [
     {
         title: 'SELENA Primary Arabic',
         instructor: 'Swati Menon',
-        image: require('../assets/test-image.png'),
-        color: '#389C9C',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-GtXhBl.jpeg'}
     },
     {
-        title: 'SELENA Primary Arabic',
-        instructor: 'Swati Menon',
-        image: require('../assets/test-image.png'),
-        color: '#389C9C',
+        title: 'SELENA Primary One-to-Ones Spanish',
+        instructor: 'Absalaam Thomas',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-a8SCCV.jpeg'}
     },
     {
-        title: 'SELENA Primary Arabic',
-        instructor: 'Swati Menon',
-        image: require('../assets/test-image.png'),
-        color: '#389C9C',
+        title: 'SELENA Intermediate Spanish',
+        instructor: 'Absalaam Thomas',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-7SrkjM.jpeg'}
     },
     {
-        title: 'SELENA Primary Arabic',
-        instructor: 'Swati Menon',
-        image: require('../assets/test-image.png'),
-        color: '#389C9C',
+        title: 'SELENA Middle School One-to-Ones Spanish',
+        instructor: 'Absalaam Thomas',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-n4J6r6.jpeg'}
     },
   ];
 

@@ -1,16 +1,13 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 
-export default ({title, instructor, image, color}) => {
+export default ({title, instructor, image}) => {
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.card}>
-                <View style={[styles.square, {backgroundColor: color}]}>
-                    <Image source={image} style={{width:145, height:144}}/>
-                </View>
-                <View style={{width: 145, height: 50}}>
-                    <Text style={styles.title}>{title}</Text>
-                    <Text style={styles.name}>{instructor}</Text>
+                <Image source={image} style={styles.square}/>
+                <View style={{width: 145, height: 50, flexGrow: 1}}>
+                    <Text style={styles.title}>{title}<Text style={styles.name}>{'\n'}{instructor}</Text></Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -23,7 +20,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 165,
-        height: 214,
+        height: 230,
         borderRadius: 8,
         backgroundColor: 'white',
         shadowColor: 'black',
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 20,
         marginRight: 20,
-        position: 'relative'
+        position: 'relative',
     },
     square: {
         width: 145,
@@ -43,16 +40,19 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 10
     },
     title: {
         fontSize: 15,
         color: '#202020',
         fontWeight: '600',
-        marginTop: 10,
+        marginTop: 5,
+        flexGrow: 1
     },
     name: {
         fontSize: 11,
         color: '#8E8E8E',
         fontWeight: '600',
+        flexGrow: 1
     },
 });
