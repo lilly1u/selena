@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        marginTop: 10,
         marginBottom: 10
     },
     title: {
@@ -63,7 +62,8 @@ const styles = StyleSheet.create({
     subheading: {
         color: '#202020',
         fontSize: 15,
-        fontWeight: 600
+        fontWeight: 600,
+        marginBottom: 20
     }
 });
 

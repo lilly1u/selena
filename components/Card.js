@@ -20,7 +20,6 @@ export default ({title, instructor, image, color}) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        marginTop: 20,
     },
     card: {
         width: 165,
@@ -33,8 +32,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 20,
         marginBottom: 20,
+        marginRight: 20,
         position: 'relative'
     },
     square: {
