@@ -13,7 +13,7 @@ export default () => {
                 <Input 
                     title='Search for lessons' 
                     icon={require('../assets/search-icon.png')} 
-                    style={{width: 350, marginTop: 20, marginBottom: 20}}
+                    style={{width: 350, marginBottom: 20}}
                     width={{width: 350}}
                 />
             </View>
@@ -27,18 +27,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
         flexDirection: 'column',
-    },
-    search: {
-        width: 350,
-        height: 50,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#8E8E8E',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginTop: 20,
-        marginBottom: 20
     },
     logo: {
         width: 350,
