@@ -40,7 +40,7 @@ const CourseScreen = () => {
     return (
     <SafeAreaView style={styles.container}>
         <View style={{marginRight: 20, marginLeft: 20, marginTop: 20}}>
-            <Header text={"Courses"}/>
+            <Header text={"All Courses"}/>
         </View>
         <FlatList
         data={DATA}

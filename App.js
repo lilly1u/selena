@@ -18,12 +18,13 @@ const HomeFlow = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen 
-        name="Home"  
+        name="HomeFlow"  
         component={HomeScreen}
       />
       <Stack.Screen
         name='Contact'
         component={ContactScreen}
+        options={{headerShown: true, headerTitle: '', headerTintColor: '#8E8E8E', headerShadowVisible: false, headerBackTitle: 'Home'}}
       />
     </Stack.Navigator>
   )

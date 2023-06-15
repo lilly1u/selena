@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
-export default ({title, placeholder}) => {
+export default ({title, placeholder, fieldStyle}) => {
     const [text, setText] = useState('');
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <TextInput
-            style={styles.input}
-            placeholder={placeholder}
-            placeholderTextColor='#8E8E8E'
-            onChangeText={(text) => setText(text)}
+                style={[styles.input, fieldStyle]}
+                placeholder={placeholder}
+                placeholderTextColor='#8E8E8E'
+                onChangeText={(text) => setText(text)}
             />
         </View>
     );
