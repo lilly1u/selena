@@ -2,6 +2,7 @@ import { View, SafeAreaView, StyleSheet, Image, Text, ScrollView } from "react-n
 
 import Header from "../components/Header";
 import InputField from "../components/InputField";
+import Button from "../components/Button";
 
 export default () => {
     return (
@@ -22,6 +23,7 @@ export default () => {
                         <InputField title='Last Name' placeholder='Doe'/>
                         <InputField title='E-mail Address' placeholder='janedoe123@gmail.com'/>
                         <InputField title='Password' placeholder='*************'/>
+                        <Button title='Change Password' buttonStyle={{width: 350, height: 50, marginTop: 10}}/>
                     </View>
                 </View>
             </ScrollView>

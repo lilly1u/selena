@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, SafeAreaView, StyleSheet, FlatList } from "react-native";
 
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -23,6 +23,16 @@ const DATA = [
         title: 'SELENA Middle School One-to-Ones Spanish',
         instructor: 'Absalaam Thomas',
         image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-n4J6r6.jpeg'}
+    },
+    {
+        title: 'SELENA Middle School One-to-Ones English',
+        instructor: 'Karlee Kategianes',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-iGG6NX.jpeg'}
+    },
+    {
+        title: 'SELENA High School Audio Scripts English',
+        instructor: 'Absalaam Thomas',
+        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-LKOPTA.jpeg'}
     },
   ];
 
