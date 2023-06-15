@@ -4,8 +4,7 @@ import Header from '../components/Header';
 import Card from '../components/Card';
 import Button from '../components/Button';
 
-
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => { 
     return (
     <SafeAreaView style={styles.container}>
         <ScrollView>
@@ -17,15 +16,15 @@ const HomeScreen = () => {
                 </View>
                 <Text style={styles.subheading}>Recent</Text>
                 <View style={{alignItems:'flex-start', flexDirection:'row'}}>
-                    <Card image={require('../assets/test-image.png')} color={'#389C9C'}/>
-                    <Card image={require('../illustrations/Croods-The-Feedback.png')} color={'#F81CA0'}/>
+                    <Card title='SELENA Primary Arabic' instructor='Swati Menon' image={{uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-GtXhBl.jpeg'}}/>
+                    <Card title='SELENA Primary One-to-Ones Spanish' instructor='Absalaam Thomas' image={{uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-a8SCCV.jpeg'}}/>
                 </View>
                 <Text style={styles.subheading}>Reccomended</Text>
                 <View style={{alignItems:'flex-start', flexDirection:'row'}}>
-                    <Card image={require('../assets/test-image.png')} color={'#389C9C'}/>
-                    <Card image={require('../illustrations/Croods-The-Feedback.png')} color={'#F81CA0'}/>
+                    <Card title='SELENA Middle School One-to-Ones English' instructor='Karlee Kategianes' image={{uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-iGG6NX.jpeg'}}/>
+                    <Card title='SELENA High School Audio Scripts English' instructor='Absalaam Thomas' image={{uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-LKOPTA.jpeg'}}/>
                 </View>
-                <Button title='Contact Us!' buttonStyle={{width: 350, height: 50}}/>
+                <Button title='Contact Us!' onPress={() => navigation.navigate('Contact')} buttonStyle={{width: 350, height: 50}}/>
             </View>
         </ScrollView>
     </SafeAreaView>
