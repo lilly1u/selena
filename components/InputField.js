@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
-export default ({title, placeholder, fieldStyle}) => {
+export default ({title, placeholder, fieldStyle, multiline}) => {
     const [text, setText] = useState('');
     return (
         <View style={styles.container}>
@@ -11,6 +11,7 @@ export default ({title, placeholder, fieldStyle}) => {
                 placeholder={placeholder}
                 placeholderTextColor='#8E8E8E'
                 onChangeText={(text) => setText(text)}
+                multiline={multiline}
             />
         </View>
     );
@@ -27,8 +28,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         paddingLeft: 20,
-        paddingBottom: 18,
-        paddingTop: 18
+        paddingRight: 20,
     },
     title: {
         color: '#202020',

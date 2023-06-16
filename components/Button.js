@@ -11,6 +11,7 @@ export default ({title, onPress, buttonStyle}) => {
 
 const styles = StyleSheet.create({
     button: {
+        height: 50,
         paddingVertical: 12,
         paddingHorizontal: 32,
         borderRadius: 8,

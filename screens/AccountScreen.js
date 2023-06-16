@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet, Image, Text, ScrollView } from "react-native";
+import { View, SafeAreaView, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 
 import Header from "../components/Header";
 import InputField from "../components/InputField";
@@ -9,7 +9,12 @@ export default () => {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={{margin: 20}}>
-                    <Header text={"Account"}/>
+                    <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                        <Header text={"Account"}/>
+                        <TouchableOpacity>
+                            <Image source={require('../assets/edit-icon.png')} style={{width: 24, height: 24}}/>
+                        </TouchableOpacity>
+                    </View>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                         <View style={styles.placeholder}>
                             <Image 
