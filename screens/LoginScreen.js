@@ -1,5 +1,3 @@
-
-import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 import Button from '../components/Button';
