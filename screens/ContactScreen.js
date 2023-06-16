@@ -1,5 +1,4 @@
-import { View, SafeAreaView, StyleSheet, ScrollView } from "react-native";
-import { useState } from "react";
+import { Text, View, StyleSheet, ScrollView, KeyboardAvoidingView } from "react-native";
 
 import Header from "../components/Header";
 import InputField from "../components/InputField";
@@ -7,19 +6,19 @@ import Button from "../components/Button";
 
 export default () => {
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={{margin: 20}}>
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} style={{margin: 20}}>
+                <View>
                     <Header text={"Contact Us!"}/>
+                    <Text style={styles.text}>Please let us know how we can be of service</Text>
                     <InputField title='Your Name'/>
                     <InputField title='Your Email'/>
                     <InputField title='Subject'/>
-                    <InputField title='Message' fieldStyle={{width: 350, height: 280}}/>
-                    <Button title='Submit'/>
+                    <InputField title='Message' multiline={true} fieldStyle={{height: 280}}/>
+                    <Button title='Submit' buttonStyle={{marginTop: 10}}/>
                 </View>
             </ScrollView>
-        </SafeAreaView>
-        
+        </KeyboardAvoidingView>
     );
 }
 
@@ -36,4 +35,9 @@ const styles = StyleSheet.create({
         height: 24,
         margin: 15,
     },
+    text: {
+        fontWeight: 600,
+        fontSize: 15,
+        marginBottom: 20
+    }
 });
