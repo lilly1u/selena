@@ -32,7 +32,7 @@ const HomeFlow = () => {
 
 const Tab = createBottomTabNavigator();
 
-function App() {
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const MainFlow = () => {
