@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Image } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from './screens/HomeScreen';
@@ -12,6 +12,7 @@ import CoursesScreen from './screens/CoursesScreen';
 import AccountScreen from './screens/AccountScreen';
 
 import ContactScreen from './screens/ContactScreen';
+
 
 const HomeFlow = () => {
   const Stack = createStackNavigator();

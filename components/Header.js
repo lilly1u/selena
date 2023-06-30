@@ -12,6 +12,6 @@ const styles = StyleSheet.create({
         color: '#FFC700',
         fontWeight: 'bold',
         fontSize: 24,
-        marginBottom: 20
+        marginBottom: 20 
     }
 })
