@@ -76,8 +76,8 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      {isLoggedIn? <MainFlow/> : <LoginScreen setIsLoggedIn={setIsLoggedIn}/>}
+    <NavigationContainer initialState={{}}>
+      {isLoggedIn? <MainFlow/> : <LoginScreen handleLogin={handleLogin} setIsLoggedIn={setIsLoggedIn}/>}
     </NavigationContainer>
   );
 }

@@ -5,8 +5,13 @@ import axios from 'axios'
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-const LoginScreen = ({setIsLoggedIn}) => {
+const LoginScreen = ({handleLogin, setIsLoggedIn}) => {
   const [loading, setLoading] = useState(false);
+
+  const handleLoginButtonPress = () => {
+    const token = getToken;
+    handleLogin(token);
+  }
 
   const URI = 'https://myselena.org'
   const [user, setUser] = useState({
@@ -83,7 +88,7 @@ const LoginScreen = ({setIsLoggedIn}) => {
             />
           </View>
 
-          <Button title='Login' onPress={getToken} buttonStyle={{width: 250, height: 50}}/>
+          <Button title='Login' onPress={handleLoginButtonPress} buttonStyle={{width: 250, height: 50}}/>
           
           <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
       

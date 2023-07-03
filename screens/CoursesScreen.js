@@ -61,7 +61,8 @@ const TYPE = [
     { label: 'Cartoon Videos', value: '10' },
   ];
 
-const CourseScreen = () => {
+const CourseScreen = (route) => {
+  const {token} = route.params;
   const [type, setType] = useState('Type');
   
   const DropdownComponent = ({type}) => {
