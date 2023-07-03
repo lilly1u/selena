@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
@@ -6,28 +6,26 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 
 const LoginScreen = ({setIsLoggedIn}) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const URI = 'https://myselena.org'
   const [user, setUser] = useState({
-    // username: '',
-    // password: ''
+    username: '',
+    password: ''
   })
 
   const getToken = async() => {
     try {
       const response = await axios.post(`${URI}/wp-json/learnpress/v1/token`, user)
       const token = response.data.token
+      setLoading(true)
       if (await validateToken(token) === 200){
         setIsLoggedIn(true);
+        setLoading(false)
       }
     } catch (error) {
       console.warn({message: 'validation error', error})
     }
-  }
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
   }
 
   const validateToken = async(token) => {
@@ -38,30 +36,18 @@ const LoginScreen = ({setIsLoggedIn}) => {
         }
       })
       return(response.data.data.status)
-
     } catch (error) {
       return({error})
     }
   }
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  if (loading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
+        {loading? 
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" />
+        </View> :
         <View style={styles.container}>
           <Image
             style={styles.selenaLogo}
@@ -69,14 +55,40 @@ const LoginScreen = ({setIsLoggedIn}) => {
 
           <Text style={styles.title}>MySelena</Text>
 
-          <Input title='Username or email' icon={require('../assets/user.png')} value={user.username} onChangeText={(input) => setUser({...user, username: input})}/>
-          <Input title='Password' icon={require('../assets/pass.png')} value={user.password} onChangeText={(input) => setUser({...user, username: input})}/>
+          <View style={styles.inputContainer}>
+            <Image
+              style={styles.logo}
+              source={require('../assets/user.png')}
+            />
+            <TextInput
+              placeholder='Username or email'
+              value={user.username}
+              onChangeText={(input) => setUser({...user, username: input})}
+              style={styles.input}
+              placeholderTextColor='#8E8E8E'
+            />
+          </View>
 
-          <Button title='Login' onPress={handleLogin} buttonStyle={{width: 250, height: 50}}/>
+          <View style={styles.inputContainer}>
+            <Image
+              style={styles.logo}
+              source={require('../assets/pass.png')}
+            />
+            <TextInput
+              placeholder='Password'
+              value={user.password}
+              onChangeText={(input) => setUser({...user, password: input})}
+              style={styles.input}
+              placeholderTextColor='#8E8E8E'
+            />
+          </View>
+
+          <Button title='Login' onPress={getToken} buttonStyle={{width: 250, height: 50}}/>
           
           <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
       
         </View>
+        }
       </KeyboardAvoidingView>
     </SafeAreaView> 
   );
@@ -89,6 +101,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
+  },
+  inputContainer: {
+    width: 250,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#8E8E8E',
+    marginBottom: 15,
+    flexDirection:'row',
+    alignItems: 'flex-start',
+  },
+  logo: {
+    width: 24,
+    height: 24,
+    margin: 13,
+  },
+  input: {
+    width: 250,
+    height: 50,
   },
   title: {
     color: '#FFC700',
