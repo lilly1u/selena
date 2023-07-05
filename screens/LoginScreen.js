@@ -1,23 +1,18 @@
 import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios'
 
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { CurrentUserContext } from '../Context';
+import { URIContext } from '../Context';
+import { TokenContext } from '../Context';
 
-const LoginScreen = ({handleLogin, setIsLoggedIn}) => {
+const LoginScreen = ({setIsLoggedIn}) => {
   const [loading, setLoading] = useState(false);
-
-  const handleLoginButtonPress = () => {
-    const token = getToken;
-    handleLogin(token);
-  }
-
-  const URI = 'https://myselena.org'
-  const [user, setUser] = useState({
-    username: '',
-    password: ''
-  })
+  const URI = useContext(URIContext);
+  const [user, setUser] = useState({username: '', password: ''});
+  const token = useContext(TokenContext);
 
   const getToken = async() => {
     try {
@@ -60,35 +55,39 @@ const LoginScreen = ({handleLogin, setIsLoggedIn}) => {
 
           <Text style={styles.title}>MySelena</Text>
 
-          <View style={styles.inputContainer}>
-            <Image
-              style={styles.logo}
-              source={require('../assets/user.png')}
-            />
-            <TextInput
-              placeholder='Username or email'
-              value={user.username}
-              onChangeText={(input) => setUser({...user, username: input})}
-              style={styles.input}
-              placeholderTextColor='#8E8E8E'
-            />
-          </View>
+          <CurrentUserContext.Provider value={{user, setUser}}>
+            <View style={styles.inputContainer}>
+              <Image
+                style={styles.logo}
+                source={require('../assets/user.png')}
+              />
+              <TextInput
+                placeholder='Username or email'
+                value={user.username}
+                onChangeText={(input) => setUser({...user, username: input})}
+                style={styles.input}
+                placeholderTextColor='#8E8E8E'
+              />
+            </View>
 
-          <View style={styles.inputContainer}>
-            <Image
-              style={styles.logo}
-              source={require('../assets/pass.png')}
-            />
-            <TextInput
-              placeholder='Password'
-              value={user.password}
-              onChangeText={(input) => setUser({...user, password: input})}
-              style={styles.input}
-              placeholderTextColor='#8E8E8E'
-            />
-          </View>
+            <View style={styles.inputContainer}>
+              <Image
+                style={styles.logo}
+                source={require('../assets/pass.png')}
+              />
+              <TextInput
+                placeholder='Password'
+                value={user.password}
+                onChangeText={(input) => setUser({...user, password: input})}
+                style={styles.input}
+                placeholderTextColor='#8E8E8E'
+              />
+            </View>
 
-          <Button title='Login' onPress={handleLoginButtonPress} buttonStyle={{width: 250, height: 50}}/>
+            <TokenContext.Provider value={{token}}>
+              <Button title='Login' onPress={getToken} buttonStyle={{width: 250, height: 50}}/>
+            </TokenContext.Provider>
+          </CurrentUserContext.Provider>
           
           <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
       

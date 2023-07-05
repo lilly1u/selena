@@ -1,163 +1,112 @@
-import { View, SafeAreaView, StyleSheet, FlatList } from "react-native";
-import React, { useState } from 'react';
+import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 import { Dropdown } from 'react-native-element-dropdown';
 
 import Header from "../components/Header";
 import Card from "../components/Card";
 
-// import DropdownComponent from "../components/Dropdown";
+import { CurrentUserContext } from '../Context';
+import { URIContext } from "../Context";
+import { TokenContext } from "../Context";
 
-const DATA = [
-    {
-        title: 'SELENA Primary Arabic',
-        instructor: 'Swati Menon',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-GtXhBl.jpeg'},
-        category: ['Type', 'Arabic', 'Primary School']
-    },
-    {
-        title: 'SELENA Primary One-to-Ones Spanish',
-        instructor: 'Absalaam Thomas',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-a8SCCV.jpeg'},
-        category: ['Type', 'One-to-Ones', 'Primary School', 'Spanish']
-    },
-    {
-        title: 'SELENA Intermediate Spanish',
-        instructor: 'Absalaam Thomas',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-7SrkjM.jpeg'},
-        category: ['Type', 'Intermediate', 'Spanish']
-    },
-    {
-        title: 'SELENA Middle School One-to-Ones Spanish',
-        instructor: 'Absalaam Thomas',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-n4J6r6.jpeg'},
-        category: ['Type', 'Middle School', 'One-to-Ones', 'Spanish']
-    },
-    {
-        title: 'SELENA Middle School One-to-Ones English',
-        instructor: 'Karlee Kategianes',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-iGG6NX.jpeg'},
-        category: ['Type', 'English', 'Intermediate', 'One-to-Ones']
-    },
-    {
-        title: 'SELENA High School Audio Scripts English',
-        instructor: 'Absalaam Thomas',
-        image: {uri: 'https://myselena.org/wp-content/uploads/2023/04/qtq80-LKOPTA.jpeg'},
-        category: ['Type', 'Audio Scripts', 'English', 'High School']
-    },
-]
+// import { WindowHeight, WindowWidth } from '../../globals/Dimensions'
 
-const TYPE = [
-    { label: 'Type', value: '0' },
-    { label: 'One-to-Ones', value: '1' },
-    { label: 'Audio Scripts', value: '2' },
-    { label: 'Workbooks', value: '3' },
-    { label: 'Audio Exercises', value: '4' },
-    { label: 'Activity Guides', value: '5' },
-    { label: 'Action Videos', value: '6' },
-    { label: 'Lesson Plans', value: '7' },
-    { label: 'Powerpoints', value: '8' },
-    { label: 'Selfie Videos', value: '9' },
-    { label: 'Cartoon Videos', value: '10' },
-  ];
+const CourseScreen = () => {
+  const user = useContext(CurrentUserContext);
+  const URI = useContext(URIContext);
+  const token = useContext(TokenContext);
 
-const CourseScreen = (route) => {
-  const {token} = route.params;
-  const [type, setType] = useState('Type');
-  
-  const DropdownComponent = ({type}) => {
-    const [isFocus, setIsFocus] = useState(false);
-  
-    return (
-      <View style={styles.container}>
-        <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          data={TYPE}
-          search={false}
-          maxHeight={300}
-          labelField="label"
-          label={type}
-          placeholder={!isFocus ? 'Type' : '   '}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setType(item.label);
-            setIsFocus(false);
-          }}
-        />
-        
-      </View>
-    );
-  };
+  const [courses, setCourses] = useState({})
+  const [page, setPage] = useState(1)
+    
+  useEffect(()=>{
+    const getCourses = async() => {
+      try {
+        const coursesResponse = (await axios.get(`${URI}/wp-json/learnpress/v1/courses`,{
+          params:{
+            page
+          },
+          headers:{
+            Authorization: `Bearer ${token}`
+          }
+        })).data
+        setCourses(coursesResponse)
+        console.log(coursesResponse)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  const listFiltered = DATA.filter(item => item.category.includes(type));
+    getCourses()
+  },[page])
 
+  const getLessons = async(course) => {
+    try {
+      const id = course.id
+      navigation.navigate('Lessons',{id,URI,token,user})
+    } catch (error) {
+      console.log(error)
+    }
+  }  
+    
   return (
-  <SafeAreaView style={styles.bigcontainer}>
-      <View style={{marginRight: 20, marginLeft: 20, marginTop: 20}}>
-          <Header text={"All Courses"}/>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <DropdownComponent type={type}/>
+    <View style={styles.container}>
+      <CurrentUserContext.Provider value={{user}}>
+        <TokenContext.Provider value={{token}}>
+          <FlatList
+            data={courses}
+            renderItem={({item}) => {
+              return(
+                <Pressable onPress={() =>getLessons(item)} style={styles.border}>
+                    <Text style={styles.input}>{item.name}</Text>
+                </Pressable>
+              )
+            }}
+            keyExtractor={(item) => item.id}
+          />
+          <View style={styles.buttons}>
+              <Text style={styles.button} onPress={()=>{
+                  setPage(page === 1? page: page - 1)
+                  console.log(`###################################################################################${page}`)
+              }}>-</Text>
+              <Text style={styles.button} onPress={()=>setPage(page + 1)}>+</Text>
           </View>
-      </View>
-      <FlatList
-      data={listFiltered}
-      renderItem={({item}) => 
-        <Card title={item.title} instructor={item.instructor} image={item.image} color={item.color}/>}
-      keyExtractor={item => item.title}
-      numColumns={2}
-      contentContainerStyle={{paddingHorizontal: 20}}
-      /> 
-  </SafeAreaView>
-  );
+        </TokenContext.Provider>
+      </CurrentUserContext.Provider>
+    </View>
+  )
 }
-  
-  const styles = StyleSheet.create({
-    bigcontainer: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        flexDirection: 'column',
-    },
-    container: {
-      backgroundColor: 'white',
-      paddingBottom: 20
-    },
-    dropdown: {
-      height: 50,
-      borderColor: 'gray',
-      borderWidth: 0.5,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-      width: 103.33,
-      
-    },
-    label: {
-      position: 'absolute',
-      backgroundColor: 'white',
-      left: 22,
-      top: 8,
-      zIndex: 999,
-      paddingHorizontal: 8,
-      fontSize: 14,
-      
-    },
-    placeholderStyle: {
-      fontSize: 16,
-    },
-    selectedTextStyle: {
-      fontSize: 16,
-    },
-    iconStyle: {
-      width: 20,
-      height: 20,
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-  });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fdf7fa' 
+  },
+  input: {
+    fontSize: 24,
+    padding: 20,
+    textAlign: 'center',
+    // width: WindowWidth * 0.9,
+    backgroundColor: '#67aaf9',
+    fontWeight: 'bold',
+    color: '#fdf7fa',
+    marginBottom: 8
+  },
+  border: {
+    borderRadius: 30
+  },
+  buttons: {
+    flexDirection: 'row',
+    gap: 40,
+    padding: 10
+  },
+  button: {
+    fontSize: 40,
+    fontWeight: 'bold'
+  }
+})
 
 export default CourseScreen;

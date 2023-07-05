@@ -10,9 +10,7 @@ import LoginScreen from './screens/LoginScreen';
 import SearchScreen from './screens/SearchScreen'
 import CoursesScreen from './screens/CoursesScreen';
 import AccountScreen from './screens/AccountScreen';
-
 import ContactScreen from './screens/ContactScreen';
-
 
 const HomeFlow = () => {
   const Stack = createStackNavigator();
@@ -35,6 +33,7 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const MainFlow = () => {
     return (
@@ -76,9 +75,9 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer initialState={{}}>
-      {isLoggedIn? <MainFlow/> : <LoginScreen handleLogin={handleLogin} setIsLoggedIn={setIsLoggedIn}/>}
-    </NavigationContainer>
+      <NavigationContainer>
+        {isLoggedIn? <MainFlow/> : <LoginScreen setIsLoggedIn={setIsLoggedIn}/>}
+      </NavigationContainer>
   );
 }
 
