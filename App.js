@@ -11,6 +11,7 @@ import SearchScreen from './screens/SearchScreen'
 import CoursesScreen from './screens/CoursesScreen';
 import AccountScreen from './screens/AccountScreen';
 import ContactScreen from './screens/ContactScreen';
+import LessonsScreen from './screens/LessonsScreen';
 
 const HomeFlow = () => {
   const Stack = createStackNavigator();
@@ -24,6 +25,22 @@ const HomeFlow = () => {
         name='Contact'
         component={ContactScreen}
         options={{headerShown: true, headerTitle: '', headerTintColor: '#8E8E8E', headerShadowVisible: false, headerBackTitle: 'Home'}}
+      />
+    </Stack.Navigator>
+  )
+}
+
+const CourseFlow = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="CourseFlow"
+        component={CoursesScreen}
+      />
+      <Stack.Screen
+        name="Lessons"
+        component={LessonsScreen}
       />
     </Stack.Navigator>
   )
@@ -68,7 +85,7 @@ const App = () => {
 
       <Tab.Screen name="Home" component={HomeFlow}/>
       <Tab.Screen name="Search" component={SearchScreen}/>
-      <Tab.Screen name="Courses" component={CoursesScreen}/>
+      <Tab.Screen name="Courses" component={CourseFlow}/>
       <Tab.Screen name="Account" component={AccountScreen}/>
     </Tab.Navigator>
     )

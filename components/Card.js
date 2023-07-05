@@ -1,13 +1,13 @@
 import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 
-export default ({title, instructor, image}) => {
+export default ({title, instructor, image, onPress}) => {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={styles.card}>
                 <Image source={image} style={styles.square}/>
                 <View style={{width: 145, height: 50, flexGrow: 1}}>
-                    <Text style={styles.title}>{title}<Text style={styles.name}>{'\n'}{instructor}</Text></Text>
+                    <Text style={styles.title}>{title}<Text style={styles.instructor}>{'\n'}{instructor}</Text></Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         flexGrow: 1
     },
-    name: {
+    instructor: {
         fontSize: 11,
         color: '#8E8E8E',
         fontWeight: '600',

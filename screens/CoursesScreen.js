@@ -10,9 +10,10 @@ import { CurrentUserContext } from '../Context';
 import { URIContext } from "../Context";
 import { TokenContext } from "../Context";
 
-// import { WindowHeight, WindowWidth } from '../../globals/Dimensions'
+import { WindowWidth } from '../Dimensions'
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const CourseScreen = () => {
+const CourseScreen = ({navigation}) => {
   const user = useContext(CurrentUserContext);
   const URI = useContext(URIContext);
   const token = useContext(TokenContext);
@@ -32,7 +33,7 @@ const CourseScreen = () => {
           }
         })).data
         setCourses(coursesResponse)
-        console.log(coursesResponse)
+        // console.log(coursesResponse)
       } catch (error) {
         console.log(error)
       }
@@ -51,45 +52,52 @@ const CourseScreen = () => {
   }  
     
   return (
-    <View style={styles.container}>
-      <CurrentUserContext.Provider value={{user}}>
-        <TokenContext.Provider value={{token}}>
-          <FlatList
-            data={courses}
-            renderItem={({item}) => {
-              return(
-                <Pressable onPress={() =>getLessons(item)} style={styles.border}>
-                    <Text style={styles.input}>{item.name}</Text>
-                </Pressable>
-              )
-            }}
-            keyExtractor={(item) => item.id}
-          />
-          <View style={styles.buttons}>
+    <SafeAreaView style={styles.bigcontainer}>
+      <View style={{marginTop: 20}}>
+        <Header text={"All Courses"}/>
+        <CurrentUserContext.Provider value={{user}}>
+          <TokenContext.Provider value={{token}}>
+            <View style={styles.buttons}>
               <Text style={styles.button} onPress={()=>{
                   setPage(page === 1? page: page - 1)
-                  console.log(`###################################################################################${page}`)
+                  // console.log(`###################################################################################${page}`)
               }}>-</Text>
               <Text style={styles.button} onPress={()=>setPage(page + 1)}>+</Text>
-          </View>
-        </TokenContext.Provider>
-      </CurrentUserContext.Provider>
-    </View>
+            </View>
+            <FlatList
+              data={courses}
+              renderItem={({item}) => {
+                console.log(item.instructor.name)
+                return(
+                  <Card onPress={() => getLessons(item)} style={styles.border} title={item.name} instructor={item.instructor.name} image={{uri: item.image}}/>
+                )
+              }}
+              numColumns={2}
+              contentContainerStyle={{paddingHorizontal: 20}}
+              keyExtractor={(item) => item.id}
+            />
+          </TokenContext.Provider>
+        </CurrentUserContext.Provider>
+      </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bigcontainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fdf7fa' 
+    backgroundColor: '#ffffff',
+    flexDirection: 'column',
+  },
+  container: {
+    backgroundColor: 'white',
+    paddingBottom: 20
   },
   input: {
     fontSize: 24,
     padding: 20,
     textAlign: 'center',
-    // width: WindowWidth * 0.9,
+    width: WindowWidth * 0.9,
     backgroundColor: '#67aaf9',
     fontWeight: 'bold',
     color: '#fdf7fa',

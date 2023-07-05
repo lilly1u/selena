@@ -11,7 +11,7 @@ import { TokenContext } from '../Context';
 const LoginScreen = ({setIsLoggedIn}) => {
   const [loading, setLoading] = useState(false);
   const URI = useContext(URIContext);
-  const [user, setUser] = useState({username: '', password: ''});
+  const [user, setUser] = useState({username: 'SelenaContent', password: 'eattheredpizza'});
   const token = useContext(TokenContext);
 
   const getToken = async() => {
