@@ -1,6 +1,7 @@
 import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios'
+import { FlashList } from "@shopify/flash-list";
+import axios from 'axios';
 import { Dropdown } from 'react-native-element-dropdown';
 
 import Header from "../components/Header";
@@ -10,7 +11,7 @@ import { CurrentUserContext } from '../Context';
 import { URIContext } from "../Context";
 import { TokenContext } from "../Context";
 
-import { WindowWidth } from '../Dimensions'
+import { WindowHeight, WindowWidth } from '../Dimensions'
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CourseScreen = ({navigation}) => {
@@ -53,28 +54,34 @@ const CourseScreen = ({navigation}) => {
     
   return (
     <SafeAreaView style={styles.bigcontainer}>
-      <View style={{marginTop: 20}}>
+      <View style={{marginTop: 20, height: WindowHeight, width: WindowWidth}}>
         <Header text={"All Courses"}/>
         <CurrentUserContext.Provider value={{user}}>
           <TokenContext.Provider value={{token}}>
-            <View style={styles.buttons}>
+            {/* <View style={styles.buttons}>
               <Text style={styles.button} onPress={()=>{
                   setPage(page === 1? page: page - 1)
                   // console.log(`###################################################################################${page}`)
               }}>-</Text>
               <Text style={styles.button} onPress={()=>setPage(page + 1)}>+</Text>
-            </View>
-            <FlatList
+            </View> */}
+            <FlashList
               data={courses}
               renderItem={({item}) => {
-                console.log(item.instructor.name)
                 return(
-                  <Card onPress={() => getLessons(item)} style={styles.border} title={item.name} instructor={item.instructor.name} image={{uri: item.image}}/>
+                  <Card
+                    onPress={() => getLessons(item)} 
+                    style={styles.border} 
+                    title={item.name} 
+                    instructor={item.instructor.name} 
+                    image={{uri: item.image}}
+                  />
                 )
               }}
               numColumns={2}
               contentContainerStyle={{paddingHorizontal: 20}}
               keyExtractor={(item) => item.id}
+              estimatedItemSize={233}
             />
           </TokenContext.Provider>
         </CurrentUserContext.Provider>
