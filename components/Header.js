@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-export default ({text}) => {
+export default ({text, style}) => {
     return (
-        <Text style={styles.title}>{text}</Text>
+        <Text style={[styles.title, style]}>{text}</Text>
     );
 }
 
@@ -12,6 +12,6 @@ const styles = StyleSheet.create({
         color: '#FFC700',
         fontWeight: 'bold',
         fontSize: 24,
-        marginBottom: 20 
+        marginBottom: 20
     }
 })

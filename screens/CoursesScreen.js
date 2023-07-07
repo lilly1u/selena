@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useContext, useState, useEffect } from 'react';
 import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
@@ -19,29 +19,40 @@ const CourseScreen = ({navigation}) => {
   const URI = useContext(URIContext);
   const token = useContext(TokenContext);
 
-  const [courses, setCourses] = useState({})
-  const [page, setPage] = useState(1)
+  const [courses, setCourses] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
     
-  useEffect(()=>{
     const getCourses = async() => {
       try {
-        const coursesResponse = (await axios.get(`${URI}/wp-json/learnpress/v1/courses`,{
+        if (!hasMore) {
+          return;
+        }
+
+        setIsLoading(true);
+
+        const coursesResponse = await axios.get(`${URI}/wp-json/learnpress/v1/courses`,{
           params:{
             page
           },
           headers:{
             Authorization: `Bearer ${token}`
           }
-        })).data
-        setCourses(coursesResponse)
+        });
+
+        const newData = coursesResponse.data
+
+        setCourses((prevCourses) => [...prevCourses, ...newData])
+        setPage((prevPage) => prevPage + 1)
+        setHasMore(newData.length > 0);
+        setIsLoading(false);
         // console.log(coursesResponse)
       } catch (error) {
         console.log(error)
+        setIsLoading(false);
       }
     }
-
-    getCourses()
-  },[page])
 
   const getLessons = async(course) => {
     try {
@@ -50,21 +61,31 @@ const CourseScreen = ({navigation}) => {
     } catch (error) {
       console.log(error)
     }
-  }  
+  }
+
+  const renderLoader = () => {
+    if (isLoading) {
+      return (
+        <View style={styles.loader}>
+          <ActivityIndicator size='large' color='#aaa'/>
+        </View>
+      );
+    }
+    return null;
+  };
+
+  const loadMoreItem = () => {
+    if (!isLoading && hasMore) {
+      getCourses();
+    }
+  }
     
   return (
-    <SafeAreaView style={styles.bigcontainer}>
-      <View style={{marginTop: 20, height: WindowHeight, width: WindowWidth}}>
-        <Header text={"All Courses"}/>
+    <SafeAreaView style={styles.container}>
+      <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
         <CurrentUserContext.Provider value={{user}}>
           <TokenContext.Provider value={{token}}>
-            {/* <View style={styles.buttons}>
-              <Text style={styles.button} onPress={()=>{
-                  setPage(page === 1? page: page - 1)
-                  // console.log(`###################################################################################${page}`)
-              }}>-</Text>
-              <Text style={styles.button} onPress={()=>setPage(page + 1)}>+</Text>
-            </View> */}
+            <Header text={"All Courses"} style={{marginLeft: 20}}/>
             <FlashList
               data={courses}
               renderItem={({item}) => {
@@ -82,6 +103,10 @@ const CourseScreen = ({navigation}) => {
               contentContainerStyle={{paddingHorizontal: 20}}
               keyExtractor={(item) => item.id}
               estimatedItemSize={233}
+              ListFooterComponent={renderLoader}
+              onEndReached={loadMoreItem}
+              onEndReachedThreshold={0}
+
             />
           </TokenContext.Provider>
         </CurrentUserContext.Provider>
@@ -91,14 +116,10 @@ const CourseScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-  bigcontainer: {
+  container: {
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'column',
-  },
-  container: {
-    backgroundColor: 'white',
-    paddingBottom: 20
   },
   input: {
     fontSize: 24,
@@ -121,6 +142,10 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 40,
     fontWeight: 'bold'
+  },
+  loader: {
+    marginVertical: 16,
+    alignItems: 'center'
   }
 })
 
