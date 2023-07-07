@@ -2,27 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
-const TYPE = [
-  { label: 'Type' },
-  { label: 'One-to-Ones' },
-  { label: 'Audio Scripts' },
-  { label: 'Workbooks' },
-  { label: 'Audio Exercises' },
-  { label: 'Activity Guides' },
-  { label: 'Action Videos' },
-  { label: 'Lesson Plans' },
-  { label: 'Powerpoints' },
-  { label: 'Selfie Videos' },
-  { label: 'Cartoon Videos' },
-];
-
-const LANG = [
-  { label: 'Langauge' },
-  { label: 'English' },
-  { label: 'Arabic' },
-  { label: 'Spanish' },
-];
-
 const DropdownComponent = ({filter}) => {
   const [label, setLabel] = useState('null');
   const [isFocus, setIsFocus] = useState(false);
@@ -65,6 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     width: 103.33,
+    fontSize: 15
     
   },
   label: {
@@ -74,21 +54,17 @@ const styles = StyleSheet.create({
     top: 8,
     zIndex: 999,
     paddingHorizontal: 8,
-    fontSize: 14,
+    fontSize: 15,
     
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 15,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 15,
   },
   iconStyle: {
     width: 20,
     height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
 });

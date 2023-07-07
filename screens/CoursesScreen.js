@@ -6,6 +6,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 
 import Header from "../components/Header";
 import Card from "../components/Card";
+import DropdownComponent from "../components/Dropdown";
+import { TYPE, LANG, GRADE } from "../components/Filters"
 
 import { CurrentUserContext } from '../Context';
 import { URIContext } from "../Context";
@@ -86,6 +88,12 @@ const CourseScreen = ({navigation}) => {
         <CurrentUserContext.Provider value={{user}}>
           <TokenContext.Provider value={{token}}>
             <Header text={"All Courses"} style={{marginLeft: 20}}/>
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              <DropdownComponent filter={TYPE}/>
+              <DropdownComponent filter={LANG}/>
+              <DropdownComponent filter={GRADE}/>
+            </View>
+            
             <FlashList
               data={courses}
               renderItem={({item}) => {
