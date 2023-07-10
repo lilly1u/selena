@@ -25,6 +25,10 @@ const CourseScreen = ({navigation}) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
+  const [type, setType] = useState('');
+  const [lang, setLang] = useState('');
+  const [grade, setGrade] = useState('');
     
     const getCourses = async() => {
       try {
@@ -81,6 +85,17 @@ const CourseScreen = ({navigation}) => {
       getCourses();
     }
   }
+
+  const listFiltered = courses.filter((item) => {
+    if (type == 'Type') {
+      return courses;
+    }else {
+      return (
+        item.name.toLowerCase().includes(type.toLowerCase()) &&
+        item.name.toLowerCase().includes(lang.toLowerCase()) &&
+        item.name.toLowerCase().includes(grade.toLowerCase())
+    )}
+  })
     
   return (
     <SafeAreaView style={styles.container}>
@@ -89,18 +104,27 @@ const CourseScreen = ({navigation}) => {
           <TokenContext.Provider value={{token}}>
             <Header text={"All Courses"} style={{marginLeft: 20}}/>
             <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <DropdownComponent filter={TYPE}/>
-              <DropdownComponent filter={LANG}/>
-              <DropdownComponent filter={GRADE}/>
+              <DropdownComponent 
+                filter={TYPE}
+                setType={setType}
+              />
+              <DropdownComponent
+                filter={LANG}
+                setLang={setLang}
+              />
+              <DropdownComponent 
+                filter={GRADE}
+                setGrade={setGrade}
+              />
             </View>
             
             <FlashList
-              data={courses}
+              data={listFiltered}
               renderItem={({item}) => {
                 return(
                   <Card
                     onPress={() => getLessons(item)} 
-                    style={styles.border} 
+                    style={styles.border}
                     title={item.name} 
                     instructor={item.instructor.name} 
                     image={{uri: item.image}}

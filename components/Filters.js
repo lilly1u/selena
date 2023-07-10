@@ -7,7 +7,7 @@ const TYPE = [
     { label: 'Activity Guides' },
     { label: 'Action Videos' },
     { label: 'Lesson Plans' },
-    { label: 'Powerpoints' },
+    { label: 'PowerPoints' },
     { label: 'Selfie Videos' },
     { label: 'Cartoon Videos' },
 ];

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { TYPE, GRADE, LANG } from './Filters';
 
-const DropdownComponent = ({filter}) => {
+const DropdownComponent = ({filter, setType, setLang, setGrade}) => {
   const [label, setLabel] = useState('null');
   const [isFocus, setIsFocus] = useState(false);
 
@@ -17,14 +18,23 @@ const DropdownComponent = ({filter}) => {
         search={false}
         maxHeight={300}
         labelField="label"
-        label={label}
-        placeholder={!isFocus ? 'Type' : '   '}
+        placeholder="Type"
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={item => {
-          setLabel(item.label);
-          setIsFocus(false);
-        }}
+                  if (filter == TYPE) {
+                    setType(item.label);
+                  }
+                  else if (filter == LANG) {
+                    setLang(item.label);
+                  }
+                  else if (filter == GRADE) {
+                    setGrade(item.label);
+                  }
+                  setLabel(item.label);
+                  setIsFocus(false);
+                  console.log(item.label)
+                }}
       />
     </View>
   );
@@ -45,7 +55,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: 103.33,
     fontSize: 15
-    
   },
   label: {
     position: 'absolute',
@@ -55,16 +64,11 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 15,
-    
   },
   placeholderStyle: {
     fontSize: 15,
   },
   selectedTextStyle: {
     fontSize: 15,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
   },
 });
