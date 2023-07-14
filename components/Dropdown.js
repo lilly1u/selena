@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { TYPE, GRADE, LANG } from './Filters';
 
-const DropdownComponent = ({filter, setType, setLang, setGrade}) => {
-  const [label, setLabel] = useState('null');
+const DropdownComponent = ({filter, placeholder, setType, setLang, setGrade, clear, setClear}) => {
+  const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -13,28 +13,36 @@ const DropdownComponent = ({filter, setType, setLang, setGrade}) => {
         style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
         data={filter}
         search={false}
         maxHeight={300}
         labelField="label"
-        placeholder="Type"
-        onFocus={() => setIsFocus(true)}
+        valueField="value"
+        placeholder={!isFocus ? placeholder : '...'}
+        value={value}
+        onFocus={() => 
+          {if (clear){
+            setIsFocus(false)
+            setClear(false)
+          }else {
+            setIsFocus(true)
+          }
+            console.log(clear)
+          }
+        }
         onBlur={() => setIsFocus(false)}
         onChange={item => {
-                  if (filter == TYPE) {
-                    setType(item.label);
-                  }
-                  else if (filter == LANG) {
-                    setLang(item.label);
-                  }
-                  else if (filter == GRADE) {
-                    setGrade(item.label);
-                  }
-                  setLabel(item.label);
-                  setIsFocus(false);
-                  console.log(item.label)
-                }}
+          if (filter == TYPE) {
+            setType(item.value);
+          }
+          else if (filter == LANG) {
+            setLang(item.value);
+          }
+          else if (filter == GRADE) {
+            setGrade(item.value);
+          }
+          setIsFocus(false);
+        }}
       />
     </View>
   );
@@ -45,16 +53,18 @@ export default DropdownComponent;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   dropdown: {
     height: 50,
+    width: 103.33,
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    width: 103.33,
-    fontSize: 15
+  },
+  icon: {
+    marginRight: 5,
   },
   label: {
     position: 'absolute',
