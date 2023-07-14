@@ -4,12 +4,13 @@ import axios from 'axios'
 
 import Button from '../components/Button';
 import Input from '../components/Input';
+
 import { CurrentUserContext } from '../Context';
 import { URIContext } from '../Context';
 import { TokenContext } from '../Context';
+import Providers from '../Context';
 
 const LoginScreen = ({setIsLoggedIn}) => {
-  const [loading, setLoading] = useState(false);
   const URI = useContext(URIContext);
   const [user, setUser] = useState({username: 'SelenaContent', password: 'eattheredpizza'});
   const token = useContext(TokenContext);
@@ -18,10 +19,8 @@ const LoginScreen = ({setIsLoggedIn}) => {
     try {
       const response = await axios.post(`${URI}/wp-json/learnpress/v1/token`, user)
       const token = response.data.token
-      setLoading(true)
       if (await validateToken(token) === 200){
         setIsLoggedIn(true);
-        setLoading(false)
       }
     } catch (error) {
       console.warn({message: 'validation error', error})
@@ -42,13 +41,10 @@ const LoginScreen = ({setIsLoggedIn}) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior="padding">
-        {loading? 
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" />
-        </View> :
-        <View style={styles.container}>
+    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="padding">
+    <View style={styles.container}>
+      <Providers user={user} URI={URI} token={token}>
           <Image
             style={styles.selenaLogo}
             source={require('../assets/selena-logo.png')}/>
@@ -90,11 +86,10 @@ const LoginScreen = ({setIsLoggedIn}) => {
           </CurrentUserContext.Provider>
           
           <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
-      
-        </View>
-        }
-      </KeyboardAvoidingView>
-    </SafeAreaView> 
+      </Providers>
+      </View>
+    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -140,11 +135,6 @@ const styles = StyleSheet.create({
   text: {
     color: '#202020',
     fontWeight: 'bold',
-  },
-  loading: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

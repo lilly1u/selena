@@ -1,8 +1,7 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
-import React, { useContext, useState, useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator, Pressable, Text, ScrollView } from "react-native";
+import React, { useContext, useState } from 'react';
 import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
-import { Dropdown } from 'react-native-element-dropdown';
 
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -12,6 +11,7 @@ import { TYPE, LANG, GRADE } from "../components/Filters"
 import { CurrentUserContext } from '../Context';
 import { URIContext } from "../Context";
 import { TokenContext } from "../Context";
+import Providers from "../Context";
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -53,7 +53,6 @@ const CourseScreen = ({navigation}) => {
         setPage((prevPage) => prevPage + 1)
         setHasMore(newData.length > 0);
         setIsLoading(false);
-        // console.log(coursesResponse)
       } catch (error) {
         console.log(error)
         setIsLoading(false);
@@ -87,37 +86,49 @@ const CourseScreen = ({navigation}) => {
   }
 
   const listFiltered = courses.filter((item) => {
-    if (type == 'Type') {
-      return courses;
-    }else {
+    if (type || lang || grade) {
       return (
         item.name.toLowerCase().includes(type.toLowerCase()) &&
         item.name.toLowerCase().includes(lang.toLowerCase()) &&
         item.name.toLowerCase().includes(grade.toLowerCase())
-    )}
+      )
+    }else {
+      return courses;
+    }
   })
     
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
-        <CurrentUserContext.Provider value={{user}}>
-          <TokenContext.Provider value={{token}}>
-            <Header text={"All Courses"} style={{marginLeft: 20}}/>
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <DropdownComponent 
-                filter={TYPE}
-                setType={setType}
-              />
-              <DropdownComponent
-                filter={LANG}
-                setLang={setLang}
-              />
-              <DropdownComponent 
-                filter={GRADE}
-                setGrade={setGrade}
-              />
-            </View>
-            
+      <Providers user={user} URI={URI} token={token}>
+        <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
+          <Header text={"All Courses"} style={{marginLeft: 20}}/>
+          <Pressable
+            onPress={() => {
+              setType('');
+              setLang('');
+              setGrade('');
+            }}
+            style={{alignItems: 'center'}}
+          >
+            <Text>Clear</Text>
+          </Pressable>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <DropdownComponent 
+              filter={TYPE}
+              placeholder='Type'
+              setType={setType}
+            />
+            <DropdownComponent
+              filter={LANG}
+              placeholder={'Language'}
+              setLang={setLang}
+            />
+            <DropdownComponent 
+              filter={GRADE}
+              placeholder={'Grade'}
+              setGrade={setGrade}
+            />
+          </View>
             <FlashList
               data={listFiltered}
               renderItem={({item}) => {
@@ -138,11 +149,9 @@ const CourseScreen = ({navigation}) => {
               ListFooterComponent={renderLoader}
               onEndReached={loadMoreItem}
               onEndReachedThreshold={0}
-
             />
-          </TokenContext.Provider>
-        </CurrentUserContext.Provider>
-      </View>
+        </View>
+      </Providers>
     </SafeAreaView>
   )
 }
