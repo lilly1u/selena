@@ -20,16 +20,7 @@ const DropdownComponent = ({filter, placeholder, setType, setLang, setGrade, cle
         valueField="value"
         placeholder={!isFocus ? placeholder : '...'}
         value={value}
-        onFocus={() => 
-          {if (clear){
-            setIsFocus(false)
-            setClear(false)
-          }else {
-            setIsFocus(true)
-          }
-            console.log(clear)
-          }
-        }
+        onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={item => {
           if (filter == TYPE) {
@@ -53,7 +44,7 @@ export default DropdownComponent;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingBottom: 20,
+    paddingBottom: 3,
   },
   dropdown: {
     height: 50,

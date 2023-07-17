@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator, Pressable, Text, ScrollView } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Pressable, Text, FlatList } from "react-native";
 import React, { useContext, useState } from 'react';
 import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
@@ -15,6 +15,7 @@ import Providers from "../Context";
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
 
 const CourseScreen = ({navigation}) => {
   const user = useContext(CurrentUserContext);
@@ -98,20 +99,11 @@ const CourseScreen = ({navigation}) => {
   })
     
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Providers user={user} URI={URI} token={token}>
         <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
           <Header text={"All Courses"} style={{marginLeft: 20}}/>
-          <Pressable
-            onPress={() => {
-              setType('');
-              setLang('');
-              setGrade('');
-            }}
-            style={{alignItems: 'center'}}
-          >
-            <Text>Clear</Text>
-          </Pressable>
+
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
             <DropdownComponent 
               filter={TYPE}
@@ -129,30 +121,42 @@ const CourseScreen = ({navigation}) => {
               setGrade={setGrade}
             />
           </View>
-            <FlashList
-              data={listFiltered}
-              renderItem={({item}) => {
-                return(
-                  <Card
-                    onPress={() => getLessons(item)} 
-                    style={styles.border}
-                    title={item.name} 
-                    instructor={item.instructor.name} 
-                    image={{uri: item.image}}
-                  />
-                )
-              }}
-              numColumns={2}
-              contentContainerStyle={{paddingHorizontal: 20}}
-              keyExtractor={(item) => item.id}
-              estimatedItemSize={233}
-              ListFooterComponent={renderLoader}
-              onEndReached={loadMoreItem}
-              onEndReachedThreshold={0}
-            />
+
+          <Pressable
+            onPress={() => {
+              setType('');
+              setLang('');
+              setGrade('');
+            }}
+            style={styles.clear}
+          >
+            <Text style={{fontWeight: 'bold'}}>clear all</Text>
+          </Pressable>
+
+          <FlashList
+            data={listFiltered}
+            renderItem={({item}) => {
+              return(
+                <Card
+                  onPress={() => getLessons(item)} 
+                  style={styles.border}
+                  title={item.name} 
+                  instructor={item.instructor.name} 
+                  image={{uri: item.image}}
+                />
+              )
+            }}
+            numColumns={2}
+            contentContainerStyle={{paddingHorizontal: 20}}
+            keyExtractor={(item) => item.id}
+            estimatedItemSize={233}
+            ListFooterComponent={renderLoader}
+            onEndReached={loadMoreItem}
+            onEndReachedThreshold={0}
+          />
         </View>
       </Providers>
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -161,6 +165,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   input: {
     fontSize: 24,
@@ -187,6 +193,10 @@ const styles = StyleSheet.create({
   loader: {
     marginVertical: 16,
     alignItems: 'center'
+  },
+  clear: {
+    alignItems: 'flex-end',
+    marginRight: 20
   }
 })
 
