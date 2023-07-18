@@ -1,25 +1,23 @@
 import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, createContext } from 'react';
 import axios from 'axios'
 
 import Button from '../components/Button';
-import Input from '../components/Input';
 
 import { CurrentUserContext } from '../Context';
-import { URIContext } from '../Context';
+import { URLContext } from '../Context';
 import { TokenContext } from '../Context';
-import Providers from '../Context';
 
 const LoginScreen = ({setIsLoggedIn}) => {
-  const URI = useContext(URIContext);
-  const [user, setUser] = useState({username: 'SelenaContent', password: 'eattheredpizza'});
-  const token = useContext(TokenContext);
+  const URI = useContext(URLContext);
+  const [currentUser, setCurrentUser] = useState({username: '', password: ''});
+  const [userToken, setUserToken] = useState(null);
 
   const getToken = async() => {
     try {
-      const response = await axios.post(`${URI}/wp-json/learnpress/v1/token`, user)
-      const token = response.data.token
-      if (await validateToken(token) === 200){
+      const response = await axios.post(`${URI}/wp-json/learnpress/v1/token`, currentUser)
+      if (await validateToken(response.data.token) === 200) {
+        setUserToken(response.data.token);
         setIsLoggedIn(true);
       }
     } catch (error) {
@@ -44,14 +42,13 @@ const LoginScreen = ({setIsLoggedIn}) => {
     <View style={styles.container}>
     <KeyboardAvoidingView behavior="padding">
     <View style={styles.container}>
-      <Providers user={user} URI={URI} token={token}>
           <Image
             style={styles.selenaLogo}
             source={require('../assets/selena-logo.png')}/>
 
           <Text style={styles.title}>MySelena</Text>
 
-          <CurrentUserContext.Provider value={{user, setUser}}>
+          <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
             <View style={styles.inputContainer}>
               <Image
                 style={styles.logo}
@@ -59,8 +56,8 @@ const LoginScreen = ({setIsLoggedIn}) => {
               />
               <TextInput
                 placeholder='Username or email'
-                value={user.username}
-                onChangeText={(input) => setUser({...user, username: input})}
+                value={currentUser.username}
+                onChangeText={(input) => setCurrentUser({...currentUser, username: input})}
                 style={styles.input}
                 placeholderTextColor='#8E8E8E'
               />
@@ -73,20 +70,24 @@ const LoginScreen = ({setIsLoggedIn}) => {
               />
               <TextInput
                 placeholder='Password'
-                value={user.password}
-                onChangeText={(input) => setUser({...user, password: input})}
+                value={currentUser.password}
+                onChangeText={(input) => setCurrentUser({...currentUser, password: input})}
                 style={styles.input}
                 placeholderTextColor='#8E8E8E'
               />
             </View>
-
-            <TokenContext.Provider value={{token}}>
-              <Button title='Login' onPress={getToken} buttonStyle={{width: 250, height: 50}}/>
+            
+            <TokenContext.Provider value={{userToken, setUserToken}}>
+              <Button 
+              title='Login' 
+              onPress={getToken} 
+              buttonStyle={{width: 250, height: 50}}/>
             </TokenContext.Provider>
+            
+            
           </CurrentUserContext.Provider>
           
           <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
-      </Providers>
       </View>
     </KeyboardAvoidingView>
     </View>
