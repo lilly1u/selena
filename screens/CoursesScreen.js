@@ -10,16 +10,16 @@ import { TYPE, LANG, GRADE } from "../components/Filters"
 
 import { CurrentUserContext } from '../Context';
 import { URLContext } from '../Context';
-import { TokenContext } from '../Context';
+import { UserTokenContext } from '../Context';
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
 const CourseScreen = ({navigation}) => {
-  const user = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
   const URL = useContext(URLContext);
-  const userToken = useContext(TokenContext);
+  const userToken = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
   const [page, setPage] = useState(1);
@@ -31,12 +31,14 @@ const CourseScreen = ({navigation}) => {
   const [grade, setGrade] = useState('');
     
     const getCourses = async() => {
+      console.log(currentUser)
       try {
         if (!hasMore) {
           return;
         }
 
         setIsLoading(true);
+        console.log(userToken)
 
         const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`,{
           params:{
@@ -62,7 +64,7 @@ const CourseScreen = ({navigation}) => {
   const getLessons = async(course) => {
     try {
       const id = course.id
-      navigation.navigate('Lessons',{id,URI: URL,token: userToken,user})
+      navigation.navigate('Lessons',{id,URI: URL,token: userToken,user: currentUser})
     } catch (error) {
       console.log(error)
     }
@@ -131,7 +133,7 @@ const CourseScreen = ({navigation}) => {
           <Text style={{fontWeight: 'bold'}}>clear all</Text>
         </Pressable>
 
-        <TokenContext.Provider value={{userToken}}>
+        <UserTokenContext.Provider value={{userToken}}>
         <FlashList
           data={listFiltered}
           renderItem={({item}) => {
@@ -153,7 +155,7 @@ const CourseScreen = ({navigation}) => {
           onEndReached={loadMoreItem}
           onEndReachedThreshold={0}
         />
-        </TokenContext.Provider>
+        </UserTokenContext.Provider>
       </View>
     </View>
   )

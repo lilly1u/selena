@@ -1,95 +1,75 @@
 import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import React, { useState, useContext, createContext } from 'react';
-import axios from 'axios'
+import React, { useState, useContext } from 'react';
 
 import Button from '../components/Button';
 
 import { CurrentUserContext } from '../Context';
-import { URLContext } from '../Context';
-import { TokenContext } from '../Context';
+import { UserTokenContext } from '../Context';
+import { useEffect } from 'react';
 
 const LoginScreen = ({setIsLoggedIn}) => {
-  const URI = useContext(URLContext);
-  const [currentUser, setCurrentUser] = useState({username: '', password: ''});
-  const [userToken, setUserToken] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { getToken, userToken, validateToken } = useContext(UserTokenContext);
 
-  const getToken = async() => {
-    try {
-      const response = await axios.post(`${URI}/wp-json/learnpress/v1/token`, currentUser)
-      if (await validateToken(response.data.token) === 200) {
-        setUserToken(response.data.token);
-        setIsLoggedIn(true);
+  useEffect(() => {
+    if (userToken !== '') {
+      const isValid = validateToken(userToken);
+      if (isValid) {
+        setIsLoggedIn(true)
       }
-    } catch (error) {
-      console.warn({message: 'validation error', error})
     }
-  }
-
-  const validateToken = async(token) => {
-    try {
-      const response = await axios.post(`${URI}/wp-json/learnpress/v1/token/validate`,{},{
-        headers:{
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return(response.data.data.status)
-    } catch (error) {
-      return({error})
-    }
-  }
+  }, [userToken])
 
   return (
     <View style={styles.container}>
-    <KeyboardAvoidingView behavior="padding">
-    <View style={styles.container}>
-          <Image
-            style={styles.selenaLogo}
-            source={require('../assets/selena-logo.png')}/>
+      <KeyboardAvoidingView behavior="padding">
+        <View style={styles.container}>
+            <Image
+              style={styles.selenaLogo}
+              source={require('../assets/selena-logo.png')}/>
 
-          <Text style={styles.title}>MySelena</Text>
+            <Text style={styles.title}>MySelena</Text>
 
-          <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
-            <View style={styles.inputContainer}>
-              <Image
-                style={styles.logo}
-                source={require('../assets/user.png')}
-              />
-              <TextInput
-                placeholder='Username or email'
-                value={currentUser.username}
-                onChangeText={(input) => setCurrentUser({...currentUser, username: input})}
-                style={styles.input}
-                placeholderTextColor='#8E8E8E'
-              />
-            </View>
+            <View>
+              <View style={styles.inputContainer}>
+                <Image
+                  style={styles.logo}
+                  source={require('../assets/user.png')}
+                />
+                <TextInput
+                  placeholder='Username or email'
+                  value={currentUser.username}
+                  onChangeText={(input) => setCurrentUser({...currentUser, username: input})}
+                  style={styles.input}
+                  placeholderTextColor='#8E8E8E'
+                />
+              </View>
 
-            <View style={styles.inputContainer}>
-              <Image
-                style={styles.logo}
-                source={require('../assets/pass.png')}
-              />
-              <TextInput
-                placeholder='Password'
-                value={currentUser.password}
-                onChangeText={(input) => setCurrentUser({...currentUser, password: input})}
-                style={styles.input}
-                placeholderTextColor='#8E8E8E'
-              />
-            </View>
-            
-            <TokenContext.Provider value={{userToken, setUserToken}}>
+              <View style={styles.inputContainer}>
+                <Image
+                  style={styles.logo}
+                  source={require('../assets/pass.png')}
+                />
+                <TextInput
+                  placeholder='Password'
+                  value={currentUser.password}
+                  onChangeText={(input) => setCurrentUser({...currentUser, password: input})}
+                  style={styles.input}
+                  placeholderTextColor='#8E8E8E'
+                />
+              </View>
+              
+              
               <Button 
               title='Login' 
               onPress={getToken} 
-              buttonStyle={{width: 250, height: 50}}/>
-            </TokenContext.Provider>
+              buttonStyle={{width: 250, height: 50}}
+              />
+            </View>
             
-            
-          </CurrentUserContext.Provider>
-          
-          <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
-      </View>
-    </KeyboardAvoidingView>
+            <Text style={{color: '#8E8E8E'}}>Don't have an Account? <Text style={{color: '#FFC700'}}>Sign Up</Text></Text>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
