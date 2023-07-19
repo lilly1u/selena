@@ -62,7 +62,7 @@ const CourseScreen = ({navigation}) => {
   const getLessons = async(course) => {
     try {
       const id = course.id
-      navigation.navigate('Lessons',{id, URL, userToken, currentUser})
+      navigation.navigate('Lessons', {id})
     } catch (error) {
       console.log(error)
     }

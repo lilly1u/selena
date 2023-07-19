@@ -1,17 +1,22 @@
 import axios from 'axios'
-import React,{ useState, useEffect } from 'react'
+import React,{ useState, useEffect, useContext } from 'react'
 import { View, FlatList,Text, Pressable, StyleSheet } from 'react-native'
 import { WindowHeight, WindowWidth } from '../Dimensions'
 
+import { UserTokenContext } from '../Context';
+import { URL } from "../Context";
+
 const LessonsScreen = ({navigation, route}) => {
-    const {id,user,URI, token} = route.params
+    const { id } = route.params
+    const { userToken } = useContext(UserTokenContext);
+
     const [lessons, setLessons] = useState({})
     useEffect(()=>{
         const getLessons = async() => {
             try {
-                const response = await axios.get(`${URI}/wp-json/learnpress/v1/courses/${id}`,{
+                const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${id}`,{
                     headers:{
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${userToken}`
                     }
                 })
                 const lessonsResponse = response.data.sections[0].items
@@ -26,7 +31,7 @@ const LessonsScreen = ({navigation, route}) => {
     },[])
 
     const goToLesson = (lesson) =>{
-        navigation.navigate('Lesson', {lessonId: lesson.id, token, URI, user})
+        navigation.navigate('LessonScreen', {lessonId: lesson.id, token, URI, user})
     }
     
 
