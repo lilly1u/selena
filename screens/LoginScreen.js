@@ -1,11 +1,10 @@
 import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import Button from '../components/Button';
 
 import { CurrentUserContext } from '../Context';
 import { UserTokenContext } from '../Context';
-import { useEffect } from 'react';
 
 const LoginScreen = ({setIsLoggedIn}) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
@@ -16,6 +15,7 @@ const LoginScreen = ({setIsLoggedIn}) => {
       const isValid = validateToken(userToken);
       if (isValid) {
         setIsLoggedIn(true)
+        console.log("User token: ", userToken);
       }
     }
   }, [userToken])

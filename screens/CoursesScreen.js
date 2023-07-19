@@ -9,17 +9,14 @@ import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
 
 import { CurrentUserContext } from '../Context';
-import { URLContext } from '../Context';
 import { UserTokenContext } from '../Context';
+import { URL } from "../Context";
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 
 const CourseScreen = ({navigation}) => {
-  const currentUser = useContext(CurrentUserContext);
-  const URL = useContext(URLContext);
-  const userToken = useContext(UserTokenContext);
+  const { currentUser } = useContext(CurrentUserContext);
+  const { userToken } = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
   const [page, setPage] = useState(1);
@@ -31,16 +28,15 @@ const CourseScreen = ({navigation}) => {
   const [grade, setGrade] = useState('');
     
     const getCourses = async() => {
-      console.log(currentUser)
       try {
         if (!hasMore) {
           return;
         }
-
+        console.log('Current user in courses: ', currentUser);
+        console.log('User token in courses: ', userToken);
         setIsLoading(true);
-        console.log(userToken)
-
-        const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`,{
+       
+        const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`, {
           params:{
             page
           },
@@ -49,6 +45,8 @@ const CourseScreen = ({navigation}) => {
           }
         });
 
+        console.log(coursesResponse);
+
         const newData = coursesResponse.data
 
         setCourses((prevCourses) => [...prevCourses, ...newData])
@@ -56,15 +54,15 @@ const CourseScreen = ({navigation}) => {
         setHasMore(newData.length > 0);
         setIsLoading(false);
       } catch (error) {
-        console.log(error)
         setIsLoading(false);
+        console.log(error)
       }
     }
 
   const getLessons = async(course) => {
     try {
       const id = course.id
-      navigation.navigate('Lessons',{id,URI: URL,token: userToken,user: currentUser})
+      navigation.navigate('Lessons',{id, URL, userToken, currentUser})
     } catch (error) {
       console.log(error)
     }

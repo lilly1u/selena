@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState} from 'react';
 import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,8 +14,6 @@ import ContactScreen from './screens/ContactScreen';
 import LessonsScreen from './screens/LessonsScreen';
 
 import Providers from './Context';
-import { UserTokenContext } from './Context';
-import { useEffect, useState } from 'react';
 
 const HomeFlow = () => {
   const Stack = createStackNavigator();
