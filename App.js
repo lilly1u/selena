@@ -12,6 +12,8 @@ import CoursesScreen from './screens/CoursesScreen';
 import AccountScreen from './screens/AccountScreen';
 import ContactScreen from './screens/ContactScreen';
 import LessonsScreen from './screens/LessonsScreen';
+import LessonScreen from './screens/LessonsScreen';
+import Browser from './screens/Browser';
 
 import Providers from './Context';
 
@@ -43,6 +45,14 @@ const CourseFlow = () => {
       <Stack.Screen
         name="Lessons"
         component={LessonsScreen}
+      />
+      <Stack.Screen
+        name="Lesson"
+        component={LessonScreen}
+      />
+      <Stack.Screen
+        name="Browser"
+        component={Browser}
       />
     </Stack.Navigator>
   )

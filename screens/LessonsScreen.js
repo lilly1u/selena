@@ -31,7 +31,7 @@ const LessonsScreen = ({navigation, route}) => {
     },[])
 
     const goToLesson = (lesson) =>{
-        navigation.navigate('LessonScreen', {lessonId: lesson.id, token, URI, user})
+        navigation.navigate('Lesson', {lessonId: lesson.id})
     }
     
 
