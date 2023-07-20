@@ -9,27 +9,34 @@ const LessonsScreen = ({navigation, route}) => {
     const { id } = route.params
     const { userToken } = useContext(UserTokenContext);
 
-    const [lessons, setLessons] = useState({})
-    useEffect(()=>{
-        const getLessons = async() => {
-            try {
-                const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${id}`,{
-                    headers:{
-                        Authorization: `Bearer ${userToken}`
-                    }
-                })
-                const lessonsResponse = response.data.sections[0].items
-                setLessons(lessonsResponse)
-                // console.log(lessonsResponse)
-            } catch (error) {
-                console.log("Problem here",error)
-            }
-        }
-        getLessons()
-    },[])
+    const [lessons, setLessons] = useState([]);
 
-    const goToLesson = (lesson) =>{
-        navigation.navigate('Lesson', {lessonId: lesson.id})
+    const getLessons = async() => {
+        try {
+            const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${id}`,{
+                headers:{
+                    Authorization: `Bearer ${userToken}`
+                }
+            })
+            const lessonsResponse = response.data.sections[0].items
+            setLessons(lessonsResponse)
+            // console.log(lessonsResponse)
+        } catch (error) {
+            console.log("Problem here",error)
+        }
+    }
+    
+    useEffect(() => {
+        console.log('run');
+        getLessons();
+    }, [])
+
+    const goToLesson = async(lesson) =>{
+        try {
+            navigation.navigate('Browser', {lessonId: lesson.id})
+        } catch (error) {
+            console.log(error)
+        }
     }
     
   return (
@@ -51,7 +58,7 @@ const LessonsScreen = ({navigation, route}) => {
   )
 }
 
-export default LessonScreen;
+export default LessonsScreen;
 
 const styles = StyleSheet.create({
     container: {
