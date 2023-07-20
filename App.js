@@ -50,10 +50,6 @@ const CourseFlow = () => {
         name="Lesson"
         component={LessonScreen}
       />
-      <Stack.Screen
-        name="Browser"
-        component={Browser}
-      />
     </Stack.Navigator>
   )
 }

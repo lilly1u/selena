@@ -45,8 +45,6 @@ const CourseScreen = ({navigation}) => {
           }
         });
 
-        console.log(coursesResponse);
-
         const newData = coursesResponse.data
 
         setCourses((prevCourses) => [...prevCourses, ...newData])
@@ -62,11 +60,11 @@ const CourseScreen = ({navigation}) => {
   const getLessons = async(course) => {
     try {
       const id = course.id
-      navigation.navigate('Lessons', {id})
+      navigation.navigate('Lessons',{id})
     } catch (error) {
       console.log(error)
     }
-  }
+  }  
 
   const renderLoader = () => {
     if (isLoading) {

@@ -2,9 +2,8 @@ import axios from 'axios'
 import React,{ useState, useEffect, useContext } from 'react'
 import { View, FlatList,Text, Pressable, StyleSheet } from 'react-native'
 import { WindowHeight, WindowWidth } from '../Dimensions'
-
-import { UserTokenContext } from '../Context';
-import { URL } from "../Context";
+import { UserTokenContext } from '../Context'
+import { URL } from '../Context'
 
 const LessonsScreen = ({navigation, route}) => {
     const { id } = route.params
@@ -21,12 +20,11 @@ const LessonsScreen = ({navigation, route}) => {
                 })
                 const lessonsResponse = response.data.sections[0].items
                 setLessons(lessonsResponse)
-                console.log(lessonsResponse)
+                // console.log(lessonsResponse)
             } catch (error) {
-                console.log(error)
+                console.log("Problem here",error)
             }
         }
-
         getLessons()
     },[])
 
@@ -34,7 +32,6 @@ const LessonsScreen = ({navigation, route}) => {
         navigation.navigate('Lesson', {lessonId: lesson.id})
     }
     
-
   return (
     <View style={styles.container}>
         
@@ -54,7 +51,7 @@ const LessonsScreen = ({navigation, route}) => {
   )
 }
 
-export default LessonsScreen
+export default LessonScreen;
 
 const styles = StyleSheet.create({
     container: {

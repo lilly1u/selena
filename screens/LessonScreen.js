@@ -1,11 +1,10 @@
 import axios from 'axios'
-import React,{useEffect, useState} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import { View,Text, Pressable,Image } from 'react-native'
+import * as WebBrowser from 'expo-web-browser'
+import { URL, UserTokenContext } from '../Context'
 
-import { UserTokenContext } from '../Context'
-import { URL } from '../Context'
-
-const Lesson = ({navigation, route}) => {
+const LessonScreen = ({navigation, route}) => {
     const { lessonId } = route.params
     const { userToken } = useContext(UserTokenContext);
 
@@ -21,7 +20,7 @@ const Lesson = ({navigation, route}) => {
                 const string = content.substring(start,end)
                 
                 return content.substring(start,end )
-            };
+              };
             
             try {
 
@@ -42,8 +41,9 @@ const Lesson = ({navigation, route}) => {
     },[])
 
    
-      const getPdf = () => {
-        navigation.navigate('Browser', {uri: pdfLink})
+      const getPdf = async() => {
+        const result = await WebBrowser.openBrowserAsync(pdfLink)
+        setPdf(result)
       }
       
   return (
@@ -62,4 +62,4 @@ const Lesson = ({navigation, route}) => {
   )
 }
 
-export default Lesson
+export default LessonScreen;
