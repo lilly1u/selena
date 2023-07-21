@@ -1,6 +1,5 @@
 import { Text, View, StyleSheet, ScrollView, KeyboardAvoidingView } from "react-native";
 
-import Header from "../components/Header";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 

@@ -1,10 +1,14 @@
 import { View, SafeAreaView, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import { DisplayNameContext } from "../Context";
 
-import Header from "../components/Header";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
+
 export default () => {
+    const { displayName } = useContext(DisplayNameContext);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -21,7 +25,7 @@ export default () => {
                                 style={{width: 100, height: 100}}
                             />
                         </View>
-                        <Text style={styles.name}>Jane Doe</Text>
+                        <Text style={styles.name}>{displayName}</Text>
                         <InputField title='Username' placeholder='janedoe123'/>
                         <InputField title='First Name' placeholder='Jane'/>
                         <InputField title='Last Name' placeholder='Doe'/>

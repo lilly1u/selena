@@ -1,7 +1,5 @@
 import { View, SafeAreaView, StyleSheet, Image, TextInput } from "react-native";
-import { useState } from "react";
 
-import Header from "../components/Header";
 import Input from "../components/Input";
 
 export default () => {
