@@ -1,17 +1,17 @@
-import { createContext, useContext, useState,useEffect } from "react";
+import React, { createContext, useState } from "react";
+import axios from 'axios'
 
 export const CurrentUserContext = createContext({username: '', password: ''});
-export const URL = 'https://myselena.org';
 export const UserTokenContext = createContext('');
-
-import axios from 'axios'
+export const URL = 'https://myselena.org';
 
 const Providers = props => {
     const [currentUser, setCurrentUser] = useState({username: 'SelenaContent', password: 'eattheredpizza'});
     const [userToken, setUserToken] = useState('');
 
     const getToken = async() => {
-        console.log(currentUser);
+        console.log("Current user: ", currentUser);
+        
         try {
           const response = await axios.post(`${URL}/wp-json/learnpress/v1/token`, currentUser)
           if(await validateToken(response.data.token) === 200){

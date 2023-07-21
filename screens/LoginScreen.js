@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import React, { useContext, useEffect } from 'react';
 
 import Button from '../components/Button';

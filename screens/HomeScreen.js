@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView } from 'react-native';
+import React, {useContext} from 'react';
 
 import Header from '../components/Header';
-import Card from '../components/Card';
-import Button from '../components/Button';
+import { CurrentUserContext } from '../Context';
 
 const HomeScreen = () => { 
+
     return (
     <SafeAreaView style={styles.container}>
         <ScrollView>
             <View style={{margin: 20}}>
-                <Header text={"Hello Jane!"}/>
+                <Header text={"Hello"}/>
                 <View style={styles.box}>
                     <Image source={require('../assets/welcome-illustration.png')} style={{resizeMode:'cover', position:'absolute', alignSelf:'flex-end'}}/>
                     <Text style={styles.title}>Welcome to <Text style={{color: '#8E8E8E'}}>Social Emotional Learning Enhancement Application</Text></Text>

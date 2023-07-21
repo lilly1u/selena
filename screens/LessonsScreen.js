@@ -13,6 +13,7 @@ const LessonsScreen = ({navigation, route}) => {
 
     const getLessons = async() => {
         try {
+            console.log('Course ID: ', id)
             const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${id}`,{
                 headers:{
                     Authorization: `Bearer ${userToken}`
@@ -27,7 +28,6 @@ const LessonsScreen = ({navigation, route}) => {
     }
     
     useEffect(() => {
-        console.log('run');
         getLessons();
     }, [])
 
