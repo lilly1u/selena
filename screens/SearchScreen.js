@@ -9,7 +9,6 @@ export default () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{margin: 20}}>
-                <Header text={"Search"}/>
                 <Input 
                     title='Search for lessons' 
                     icon={require('../assets/search-icon.png')} 

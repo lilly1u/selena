@@ -10,7 +10,6 @@ export default () => {
             <ScrollView>
                 <View style={{margin: 20}}>
                     <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-                        <Header text={"Account"}/>
                         <TouchableOpacity>
                             <Image source={require('../assets/edit-icon.png')} style={{width: 24, height: 24}}/>
                         </TouchableOpacity>

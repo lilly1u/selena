@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, useEffect, useState} from 'react';
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -20,9 +20,10 @@ import Providers from './Context';
 const HomeFlow = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator 
+      screenOptions={styles.header}>
       <Stack.Screen 
-        name="HomeFlow"  
+        name="Hello"  
         component={HomeScreen}
       />
       <Stack.Screen
@@ -37,9 +38,9 @@ const HomeFlow = () => {
 const CourseFlow = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={styles.header}>
       <Stack.Screen
-        name="CourseFlow"
+        name="All Courses"
         component={CoursesScreen}
       />
       <Stack.Screen
@@ -53,6 +54,18 @@ const CourseFlow = () => {
     </Stack.Navigator>
   )
 }
+
+// const SearchFlow = () => {
+//   const Stack = createStackNavigator();
+//   return (
+//     <Stack.Navigator screenOptions={styles.header}>
+//       <Stack.Screen
+//         name='Search'
+//         component={SearchScreen}
+//       />
+//     </Stack.Navigator>
+//   )
+// }
 
 const Tab = createBottomTabNavigator();
 const MainFlow = () => {
@@ -107,3 +120,18 @@ const App = () => {
 }
 
 export default App;
+
+const styles = StyleSheet.create({
+  header: {
+    headerShown: true, 
+    headerTitleAlign: 'left',
+    headerLeft: () => null,
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#FFC700',
+      fontSize: 24,
+    },
+    headerShadowVisible: false,
+      
+  }
+});
