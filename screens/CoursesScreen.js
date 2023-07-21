@@ -98,7 +98,6 @@ const CourseScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
-        <Header text={"All Courses"} style={{marginLeft: 20}}/>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
           <DropdownComponent 

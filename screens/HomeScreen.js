@@ -1,8 +1,4 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView } from 'react-native';
-import React, {useContext} from 'react';
-
-import Header from '../components/Header';
-import { CurrentUserContext } from '../Context';
 
 const HomeScreen = () => { 
     return (
