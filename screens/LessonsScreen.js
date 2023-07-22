@@ -1,29 +1,29 @@
 import axios from 'axios'
 import React,{ useState, useEffect, useContext } from 'react'
-import { View, FlatList,Text, Pressable, StyleSheet } from 'react-native'
+import { View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { WindowHeight, WindowWidth } from '../Dimensions'
 import { UserTokenContext } from '../Context'
 import { URL } from '../Context'
 
 const LessonsScreen = ({navigation, route}) => {
-    const { id } = route.params
+    const { courseId, courseName } = route.params
     const { userToken } = useContext(UserTokenContext);
 
     const [lessons, setLessons] = useState([]);
 
     const getLessons = async() => {
         try {
-            console.log('Course ID: ', id)
-            const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${id}`,{
+            console.log('Course ID: ', courseId);
+            console.log('Course Name: ', courseName);
+            const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${courseId}`,{
                 headers:{
                     Authorization: `Bearer ${userToken}`
                 }
             })
             const lessonsResponse = response.data.sections[0].items
             setLessons(lessonsResponse)
-            // console.log(lessonsResponse)
         } catch (error) {
-            console.log("Problem here",error)
+            console.log(error)
         }
     }
     
@@ -41,17 +41,21 @@ const LessonsScreen = ({navigation, route}) => {
     
   return (
     <View style={styles.container}>
-        
+        <Text style={styles.name}>{courseName}</Text>
         <FlatList
             data={lessons}
             renderItem={({item}) => {
                 return(
-                    <Pressable
+                    <TouchableOpacity
                         onPress={() => goToLesson(item)}
-                    ><Text style={styles.input}>{item.title}</Text></Pressable>
+                        >
+                        <View style={styles.lesson}>
+                            <Text style={{fontWeight: 'bold', color: '#202020', textAlign: 'left',}}>{item.title}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )
             }}
-
+            contentContainerStyle={{alignItems: 'center',}}
         />
     </View>
 
@@ -63,19 +67,27 @@ export default LessonsScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#fdf7fa' 
+      backgroundColor: '#fff',
+      paddingLeft: 20,
+      paddingRight: 20
     },
-    input: {
-      fontSize: 24,
+    lesson: {
+      fontSize: 15,
       padding: 20,
-      textAlign: 'center',
+      borderRadius: 8,
       width: WindowWidth * 0.9,
-      backgroundColor: '#57cc99',
+      marginBottom: 8,
+      backgroundColor: '#fff',
+      shadowColor: 'black',
+      shadowOffset: {height: 4},
+      shadowOpacity: .25,
+      shadowRadius: 2,
+    },
+    name: {
+      fontSize: 24,
       fontWeight: 'bold',
-      color: '#fdf7fa',
-      marginBottom: 8
+      color: '#FFC700',
+      paddingBottom: 10
     },
     border: {
       borderRadius: 30

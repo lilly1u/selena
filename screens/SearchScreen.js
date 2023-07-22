@@ -3,7 +3,6 @@ import { View, SafeAreaView, StyleSheet, Image, TextInput } from "react-native";
 import Input from "../components/Input";
 
 export default () => {
-    // const [text, setText] = useState('');
     return (
         <SafeAreaView style={styles.container}>
             <View style={{margin: 20}}>

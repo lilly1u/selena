@@ -6,7 +6,7 @@ export default ({title, instructor, image, onPress}) => {
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={styles.card}>
                 <Image source={image} style={styles.square}/>
-                <View style={{width: 145, height: 50, flexGrow: 1}}>
+                <View style={styles.text}>
                     <Text style={styles.title}>{title}<Text style={styles.instructor}>{'\n'}{instructor}</Text></Text>
                 </View>
             </View>
@@ -17,6 +17,8 @@ export default ({title, instructor, image, onPress}) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
+        marginBottom: 20,
+        marginLeft: 10,
     },
     card: {
         width: 165,
@@ -29,9 +31,6 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 20,
-        marginRight: 20,
-        position: 'relative',
     },
     square: {
         width: 145,
@@ -41,6 +40,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10
+    },
+    text: {
+        width: 145, 
+        height: 50, 
+        flexGrow: 1
     },
     title: {
         fontSize: 15,

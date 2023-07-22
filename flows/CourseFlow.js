@@ -17,10 +17,12 @@ export default CourseFlow = () => {
         <Stack.Screen
           name="Lessons"
           component={LessonsScreen}
+          options={styles.back}
         />
         <Stack.Screen
           name="Browser"
           component={Browser}
+          options={styles.back}
         />
       </Stack.Navigator>
     )
@@ -30,12 +32,17 @@ const styles = StyleSheet.create({
     header: {
       headerShown: true, 
       headerTitleAlign: 'left',
-      headerLeft: () => null,
       headerTitleStyle: {
         fontWeight: 'bold',
         color: '#FFC700',
         fontSize: 24,
       },
       headerShadowVisible: false,
+    },
+    back: {
+      headerTitle: '', 
+      headerBackTitle: 'back', 
+      headerBackTitleVisible: true, 
+      headerTintColor: '#8E8E8E'
     }
   });

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator, Pressable, Text, FlatList } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Pressable, Text } from "react-native";
 import React, { useContext, useState } from 'react';
 import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
@@ -31,8 +31,7 @@ const CourseScreen = ({navigation}) => {
         if (!hasMore) {
           return;
         }
-        console.log('Current user in courses: ', currentUser);
-        console.log('User token in courses: ', userToken);
+
         setIsLoading(true);
        
         const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`, {
@@ -58,8 +57,7 @@ const CourseScreen = ({navigation}) => {
 
   const getLessons = async(course) => {
     try {
-      const id = course.id
-      navigation.navigate('Lessons',{id})
+      navigation.navigate('Lessons',{courseId: course.id, courseName: course.name})
     } catch (error) {
       console.log(error)
     }
@@ -96,27 +94,24 @@ const CourseScreen = ({navigation}) => {
     
   return (
     <View style={styles.container}>
-      <View style={{marginTop: 20, flex: 1, height: WindowHeight, width: WindowWidth}}>
-
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <DropdownComponent 
-            filter={TYPE}
-            placeholder='Type'
-            setType={setType}
-          />
-          <DropdownComponent
-            filter={LANG}
-            placeholder='Language'
-            setLang={setLang}
-          />
-          <DropdownComponent 
-            filter={GRADE}
-            placeholder='Grade'
-            setGrade={setGrade}
-          />
-        </View>
-
-        <Pressable
+      <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <DropdownComponent 
+          filter={TYPE}
+          placeholder='Type'
+          setType={setType}
+        />
+        <DropdownComponent
+          filter={LANG}
+          placeholder='Language'
+          setLang={setLang}
+        />
+        <DropdownComponent 
+          filter={GRADE}
+          placeholder='Grade'
+          setGrade={setGrade}
+        />
+      </View>
+      <Pressable
           onPress={() => {
             setType('');
             setLang('');
@@ -127,7 +122,7 @@ const CourseScreen = ({navigation}) => {
           <Text style={{fontWeight: 'bold'}}>clear all</Text>
         </Pressable>
 
-        <UserTokenContext.Provider value={{userToken}}>
+      <View style={{flex: 1, height: WindowHeight, width: WindowWidth}}>
         <FlashList
           data={listFiltered}
           renderItem={({item}) => {
@@ -142,15 +137,15 @@ const CourseScreen = ({navigation}) => {
             )
           }}
           numColumns={2}
-          contentContainerStyle={{paddingHorizontal: 20}}
+          contentContainerStyle={{paddingHorizontal: 10}}
           keyExtractor={(item) => item.id}
           estimatedItemSize={233}
           ListFooterComponent={renderLoader}
           onEndReached={loadMoreItem}
           onEndReachedThreshold={0}
         />
-        </UserTokenContext.Provider>
       </View>
+
     </View>
   )
 }
@@ -160,8 +155,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   input: {
     fontSize: 24,
@@ -175,15 +168,6 @@ const styles = StyleSheet.create({
   },
   border: {
     borderRadius: 30
-  },
-  buttons: {
-    flexDirection: 'row',
-    gap: 40,
-    padding: 10
-  },
-  button: {
-    fontSize: 40,
-    fontWeight: 'bold'
   },
   loader: {
     marginVertical: 16,
