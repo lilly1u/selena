@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import CoursesScreen from '../screens/CoursesScreen';
+import CourseScreen from '../screens/CourseScreen';
 import LessonsScreen from '../screens/LessonsScreen';
 import Browser from '../screens/Browser';
 
@@ -11,8 +12,13 @@ export default CourseFlow = () => {
     return (
       <Stack.Navigator screenOptions={styles.header}>
         <Stack.Screen
-          name="All Courses"
+          name="My Courses"
           component={CoursesScreen}
+        />
+        <Stack.Screen
+          name="Course"
+          component={CourseScreen}
+          options={styles.back}
         />
         <Stack.Screen
           name="Lessons"

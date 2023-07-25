@@ -7,14 +7,12 @@ import Card from "../components/Card";
 import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
 
-import { CurrentUserContext } from '../Context';
 import { UserTokenContext } from '../Context';
 import { URL } from "../Context";
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 
 const CourseScreen = ({navigation}) => {
-  const { currentUser } = useContext(CurrentUserContext);
   const { userToken } = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
@@ -26,42 +24,54 @@ const CourseScreen = ({navigation}) => {
   const [lang, setLang] = useState('');
   const [grade, setGrade] = useState('');
     
-    const getCourses = async() => {
-      try {
-        if (!hasMore) {
-          return;
-        }
-
-        setIsLoading(true);
-       
-        const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`, {
-          params:{
-            page
-          },
-          headers:{
-            Authorization: `Bearer ${userToken}`
-          }
-        });
-
-        const newData = coursesResponse.data
-
-        setCourses((prevCourses) => [...prevCourses, ...newData])
-        setPage((prevPage) => prevPage + 1)
-        setHasMore(newData.length > 0);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error)
-      }
-    }
-
-  const getLessons = async(course) => {
+  const getCourses = async() => {
     try {
-      navigation.navigate('Lessons',{courseId: course.id, courseName: course.name})
+      if (!hasMore) {
+        return;
+      }
+
+      setIsLoading(true);
+
+      const coursesResponse = await axios.get(`${URL}/wp-json/learnpress/v1/courses`, {
+        params:{
+          page
+        },
+        headers:{
+          Authorization: `Bearer ${userToken}`
+        }
+      });
+
+      const newData = coursesResponse.data
+
+      setCourses((prevCourses) => [...prevCourses, ...newData])
+      setPage((prevPage) => prevPage + 1)
+      setHasMore(newData.length > 0);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error)
+    }
+  }
+
+  const getCourse = (course) => {
+    try {
+      if (course.course_data.status == 'enrolled') {
+        navigation.navigate('Lessons',  {courseId: course.id, courseName: course.name});
+      } else {
+        navigation.navigate('Course',  {courseId: course.id, courseName: course.name, courseStatus: course.course_data.status});
+      }
     } catch (error) {
       console.log(error)
     }
-  }  
+  }
+
+  // const getLessons = async(course) => {
+  //   try {
+  //     navigation.navigate('Lessons',{courseId: course.id, courseName: course.name})
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }  
 
   const renderLoader = () => {
     if (isLoading) {
@@ -111,24 +121,26 @@ const CourseScreen = ({navigation}) => {
           setGrade={setGrade}
         />
       </View>
+
       <Pressable
-          onPress={() => {
-            setType('');
-            setLang('');
-            setGrade('');
-          }}
-          style={styles.clear}
+        onPress={() => {
+          setType('');
+          setLang('');
+          setGrade('');
+        }}
+        style={styles.clear}
         >
-          <Text style={{fontWeight: 'bold'}}>clear all</Text>
-        </Pressable>
+        <Text style={{fontWeight: 'bold'}}>clear all</Text>
+      </Pressable>
 
       <View style={{flex: 1, height: WindowHeight, width: WindowWidth}}>
         <FlashList
           data={listFiltered}
           renderItem={({item}) => {
+            console.log(item);
             return(
               <Card
-                onPress={() => getLessons(item)} 
+                onPress={() => getCourse(item)} 
                 style={styles.border}
                 title={item.name} 
                 instructor={item.instructor.name} 
