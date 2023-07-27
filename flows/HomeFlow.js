@@ -9,6 +9,8 @@ import { DisplayNameContext } from '../Context';
 
 export default () => {
     const { displayName } = useContext(DisplayNameContext);
+    const name = displayName.split(' ');
+    let firstName = name[0];
   
     const Stack = createStackNavigator();
     return (
@@ -17,7 +19,7 @@ export default () => {
         <Stack.Screen 
           name='HomeFlow'
           component={HomeScreen}
-          options={{title: 'Welcome, ' + displayName + '!'}}
+          options={{title: 'Hello ' + firstName + '!'}}
         />
         <Stack.Screen
           name='Contact'
