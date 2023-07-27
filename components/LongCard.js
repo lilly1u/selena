@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 350,
-        height: 220,
+        height: 225,
         borderRadius: 8,
         backgroundColor: 'white',
         shadowColor: 'black',
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     },
     percent: {
         fontSize: 12,
-        fontWeight: '400'
+        fontWeight: '400',
+        flexGrow: 1
     },
 });

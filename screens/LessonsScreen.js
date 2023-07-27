@@ -20,8 +20,12 @@ const LessonsScreen = ({navigation, route}) => {
                     Authorization: `Bearer ${userToken}`
                 }
             })
-            const lessonsResponse = response.data.sections[0].items
-            setLessons(lessonsResponse)
+            if (response.data.sections[0] == undefined) {
+                setLessons({});
+            } else {
+                const lessonsResponse = response.data.sections[0].items;
+                setLessons(lessonsResponse);
+            }            
         } catch (error) {
             console.log(error)
         }
@@ -41,7 +45,7 @@ const LessonsScreen = ({navigation, route}) => {
     
   return (
     <View style={styles.container}>
-        <Text style={styles.name}>{courseName}</Text>
+            <Text style={styles.name}>{courseName}</Text>
         <FlatList
             data={lessons}
             renderItem={({item}) => {
@@ -68,8 +72,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      paddingLeft: 20,
-      paddingRight: 20
     },
     lesson: {
       fontSize: 15,
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       width: WindowWidth * 0.9,
       marginBottom: 8,
-      backgroundColor: '#fff',
+      backgroundColor: '#F9FAFC',
       shadowColor: 'black',
       shadowOffset: {height: 4},
       shadowOpacity: .25,
@@ -87,7 +89,8 @@ const styles = StyleSheet.create({
       fontSize: 24,
       fontWeight: 'bold',
       color: '#FFC700',
-      paddingBottom: 10
+      paddingBottom: 10,
+      paddingLeft: 20
     },
     border: {
       borderRadius: 30

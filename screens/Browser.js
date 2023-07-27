@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React,{useEffect, useState, useContext} from 'react'
-import { View, Text, Pressable, StyleSheet} from 'react-native'
+import { View, Text, Pressable, StyleSheet, Button} from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 import { UserTokenContext, URL } from '../Context';
 
@@ -41,20 +41,14 @@ const Browser = ({navigation, route}) => {
 
    
     const getPdf = async() => {
-    const result = await WebBrowser.openBrowserAsync(pdfLink)
-    setPdf(result)
+        const result = await WebBrowser.openBrowserAsync(pdfLink)
+        setPdf(result)
     }
       
   return (
     <View style={styles.container}>
         <Text style={styles.name}>{lesson.name}</Text>
-        <Pressable onPress={()=> downloadPDF()}>
-            <Text onPress={getPdf}>
-                Download Pdf
-            </Text>
-            
-        </Pressable>
-        
+        <Button title="Open WebBrowser" onPress={getPdf} />
     </View>
   )
 }

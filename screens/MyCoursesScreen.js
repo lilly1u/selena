@@ -1,5 +1,5 @@
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
 
@@ -71,6 +71,18 @@ const MyCoursesScreen = ({navigation}) => {
       getCourses();
     }
   }
+
+  const coursePercent = (item) => {
+    if (item.sections[0] == undefined) {
+      return(
+        0
+      );
+    } else {
+      return(
+        item.sections[0].percent
+      );
+    }
+  }
     
   return (
     <View style={styles.container}>
@@ -78,14 +90,13 @@ const MyCoursesScreen = ({navigation}) => {
         <FlashList
           data={courses}
           renderItem={({item}) => {
-            console.log(item.sections[0].percent)
             return(
               <LongCard
                 onPress={() => getCourse(item)} 
                 style={styles.border}
                 title={item.name} 
                 instructor={item.instructor.name} 
-                progress={Math.round(item.sections[0].percent)}
+                progress={Math.round(coursePercent(item))}
                 image={{uri: item.image}}
               />
             )

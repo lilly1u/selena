@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MyCoursesScreen from '../screens/MyCoursesScreen';
 import AllCourseScreen from '../screens/AllCoursesScreen';
-import CourseScreen from '../screens/CourseScreen';
+import EnrollScreen from '../screens/EnrollScreen';
 import LessonsScreen from '../screens/LessonsScreen';
 import Browser from '../screens/Browser';
 
@@ -29,11 +29,11 @@ export default CourseFlow = () => {
         <Stack.Screen
           name="All Courses"
           component={AllCourseScreen}
-          options={styles.back}
+          options={{headerLeft: false}}
         />
         <Stack.Screen
-          name="Course"
-          component={CourseScreen}
+          name="Enroll"
+          component={EnrollScreen}
           options={styles.back}
         />
         <Stack.Screen

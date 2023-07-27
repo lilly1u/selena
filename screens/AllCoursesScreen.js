@@ -55,11 +55,11 @@ const AllCourseScreen = ({navigation}) => {
 
   const getCourse = (course) => {
     try {
-      if (course.course_data.status == 'enrolled') {
-        navigation.navigate('Lessons',  {courseId: course.id, courseName: course.name});
+      if (course.course_data.status == '') {
+        navigation.navigate('Enroll', {course: course})
       } else {
-        navigation.navigate('Course',  {courseId: course.id, courseName: course.name, courseStatus: course.course_data.status});
-      }
+        navigation.navigate('Lessons', {courseId: course.id, courseName: course.name})
+      };
     } catch (error) {
       console.log(error)
     }
@@ -87,10 +87,10 @@ const AllCourseScreen = ({navigation}) => {
       return (
         item.name.toLowerCase().includes(type.toLowerCase()) &&
         item.name.toLowerCase().includes(lang.toLowerCase()) &&
-        item.name.toLowerCase().includes(grade.toLowerCase())
+        item.name.toLowerCase().includes(grade.toLowerCase()) 
       )
     }else {
-      return (item.course_data.status == '');
+      return courses; 
     }
   })
     
