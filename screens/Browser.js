@@ -14,8 +14,8 @@ const Browser = ({navigation, route}) => {
 
     const extractDownloadLink = (content) => {
         const start = content.indexOf('href=') + 6;
-        const end = content.indexOf('download><') - 2
-        const string = content.substring(start,end)
+        const end = content.indexOf('download><') - 2;
+        const string = content.substring(start,end);
         return string;
     };
 

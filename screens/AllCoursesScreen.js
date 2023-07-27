@@ -12,7 +12,7 @@ import { URL } from "../Context";
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 
-const CourseScreen = ({navigation}) => {
+const AllCourseScreen = ({navigation}) => {
   const { userToken } = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
@@ -65,14 +65,6 @@ const CourseScreen = ({navigation}) => {
     }
   }
 
-  // const getLessons = async(course) => {
-  //   try {
-  //     navigation.navigate('Lessons',{courseId: course.id, courseName: course.name})
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }  
-
   const renderLoader = () => {
     if (isLoading) {
       return (
@@ -98,7 +90,7 @@ const CourseScreen = ({navigation}) => {
         item.name.toLowerCase().includes(grade.toLowerCase())
       )
     }else {
-      return courses;
+      return (item.course_data.status == '');
     }
   })
     
@@ -137,7 +129,6 @@ const CourseScreen = ({navigation}) => {
         <FlashList
           data={listFiltered}
           renderItem={({item}) => {
-            console.log(item);
             return(
               <Card
                 onPress={() => getCourse(item)} 
@@ -161,6 +152,8 @@ const CourseScreen = ({navigation}) => {
     </View>
   )
 }
+
+export default AllCourseScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -191,4 +184,3 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CourseScreen;

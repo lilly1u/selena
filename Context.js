@@ -18,6 +18,7 @@ const Providers = props => {
           const response = await axios.post(`${URL}/wp-json/learnpress/v1/token`, currentUser)
           if(await validateToken(response.data.token) === 200){
             setUserToken(response.data.token);
+            console.log(response.data.user_display_name);
             setDisplayName(response.data.user_display_name);
           }
         } catch (error) {
