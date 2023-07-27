@@ -33,13 +33,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     square: {
-        width: 145,
-        height: 144,
+        width: 165,
+        height: 154,
         backgroundColor: '#C4C4C4',
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
     },
     text: {
         width: 145, 
