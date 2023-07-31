@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React,{useEffect, useState, useContext} from 'react'
-import { View, Text, Pressable, StyleSheet, Button} from 'react-native'
+import { View, Text, StyleSheet, Button} from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 import { UserTokenContext, URL } from '../Context';
 

@@ -1,5 +1,5 @@
-import { View, FlatList, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
-import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
 import { URL, UserTokenContext } from '../Context';
@@ -7,6 +7,7 @@ import { URL, UserTokenContext } from '../Context';
 const EnrollScreen = ({navigation, route}) => {
     const { course } = route.params;
     const { userToken } = useContext(UserTokenContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const courseId = course.id;
     const courseName = course.name;
@@ -16,18 +17,19 @@ const EnrollScreen = ({navigation, route}) => {
     const students = course.count_students;
 
     const enroll = async() => {
-        console.log(course);
         try {
+
             const enrollInCourse = await axios.post(`${URL}/wp-json/learnpress/v1/courses/enroll`, {id: courseId}, {
                 headers:{
                   Authorization: `Bearer ${userToken}`
                 }
             });
+
             console.log(enrollInCourse.data.message);
-            navigation.navigate('Lessons', {courseId, courseName});
             Alert.alert(`${enrollInCourse.data.status}`, `${enrollInCourse.data.message}`, [
                 {text: 'Continue', onPress: () => navigation.navigate('Lessons', {courseId, courseName})},
             ]);
+            
         } catch (error) {
             console.log('here',error);
         }

@@ -7,8 +7,7 @@ import Card from "../components/Card";
 import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
 
-import { UserTokenContext } from '../Context';
-import { URL } from "../Context";
+import { UserTokenContext, URL } from '../Context';
 
 import { WindowHeight, WindowWidth } from '../Dimensions'
 
