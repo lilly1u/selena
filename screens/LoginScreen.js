@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Button from '../components/Button';
-import { CurrentUserContext, UserTokenContext, DisplayNameContext, URL } from '../Context';
-import { WindowHeight } from '../Dimensions';
+import { CurrentUserContext, UserTokenContext, DisplayNameContext, URL } from '../globals/Context';
+import { WindowHeight } from '../globals/Dimensions';
 
-const LoginScreen = ({setIsLoggedIn}) => {
+export default ({setIsLoggedIn}) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { userToken, setUserToken } = useContext(UserTokenContext);
   const { setDisplayName } = useContext(DisplayNameContext);
@@ -123,7 +123,6 @@ const LoginScreen = ({setIsLoggedIn}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
@@ -168,5 +167,3 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 });
-
-export default LoginScreen;

@@ -1,25 +1,33 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import React, { useContext } from 'react';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const HomeScreen = () => { 
+import { DisplayNameContext } from '../globals/Context';
+import Header from '../components/Header'
+
+export default () => { 
+    const insets = useSafeAreaInsets();
+
+    const { displayName } = useContext(DisplayNameContext);
+    const name = displayName.split(' ');
+    let firstName = name[0];
+
     return (
-    <SafeAreaView style={styles.container}>
-        <ScrollView>
-            <View style={{margin: 20}}>
+        <ScrollView style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right}]}>
+            <Header title={'Hello ' + firstName + '!'}/>
                 <View style={styles.box}>
-                    <Image source={require('../assets/welcome-illustration.png')} style={{resizeMode:'cover', position:'absolute', alignSelf:'flex-end'}}/>
                     <Text style={styles.title}>Welcome to <Text style={{color: '#8E8E8E'}}>Social Emotional Learning Enhancement Application</Text></Text>
                 </View>
-            </View>
         </ScrollView>
-    </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
         flexDirection: 'column',
+        marginLeft: 20,
+        marginRight: 20
     },
     box: {
         width: 350, 
@@ -32,7 +40,6 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        marginBottom: 10
     },
     title: {
         fontWeight: 600,
@@ -49,5 +56,3 @@ const styles = StyleSheet.create({
         marginBottom: 20
     }
 });
-
-export default HomeScreen;

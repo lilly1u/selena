@@ -1,17 +1,21 @@
 import { View, SafeAreaView, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
-import { DisplayNameContext } from "../Context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import Header from '../components/Header';
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-
+import { DisplayNameContext } from "../globals/Context";
 
 export default () => {
+    const insets = useSafeAreaInsets();
+
     const { displayName } = useContext(DisplayNameContext);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right}]}>
             <ScrollView>
+                <Header title='Account'/>
                 <View style={{margin: 20}}>
                     <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
                         <TouchableOpacity>
@@ -42,8 +46,9 @@ export default () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
         flexDirection: 'column',
+        marginLeft: 20,
+        marginRight: 20
     },
     placeholder: {
         width: 200,

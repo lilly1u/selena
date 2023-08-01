@@ -1,20 +1,23 @@
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import LoginScreen from './screens/LoginScreen';
 import MainFlow from './flows/MainFlow';
-
-import Providers from './Context';
+import Providers from './globals/Context';
+import { NavigationTheme } from './globals/Theme';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <Providers>
-      <NavigationContainer>
-        {isLoggedIn? <MainFlow/> : <LoginScreen setIsLoggedIn={setIsLoggedIn}/> }
-      </NavigationContainer> 
-    </Providers>
+    <SafeAreaProvider>
+      <Providers>
+        <NavigationContainer theme={NavigationTheme}>
+          {isLoggedIn? <MainFlow/> : <LoginScreen setIsLoggedIn={setIsLoggedIn}/> }
+        </NavigationContainer> 
+      </Providers>
+    </SafeAreaProvider>
   );
 }
 

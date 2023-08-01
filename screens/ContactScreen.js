@@ -24,12 +24,9 @@ export default () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
         flexDirection: 'column',
     },
     logo: {
-        width: 350,
-        height: 50,
         width: 24,
         height: 24,
         margin: 15,

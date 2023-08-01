@@ -41,23 +41,9 @@ export default () => {
     })}>
   
       <Tab.Screen name="Home" component={HomeFlow}/>
-      <Tab.Screen name="Search" component={SearchScreen} options={styles.header}/>
+      <Tab.Screen name="Search" component={SearchScreen}/>
       <Tab.Screen name="Courses" component={CourseFlow}/>
-      <Tab.Screen name="Account" component={AccountScreen} options={styles.header}/>
+      <Tab.Screen name="Account" component={AccountScreen}/>
     </Tab.Navigator>
     )
 }
-
-const styles = StyleSheet.create({
-    header: {
-      headerShown: true, 
-      headerTitleAlign: 'left',
-      headerLeft: () => null,
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        color: '#FFC700',
-        fontSize: 24,
-      },
-      headerShadowVisible: false,
-    }
-  });

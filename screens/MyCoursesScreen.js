@@ -1,22 +1,26 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, FlatList, Text, TouchableOpacity } from "react-native";
 import React, { useContext, useState, useEffect } from 'react';
-import { FlashList } from "@shopify/flash-list";
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import LongCard from "../components/LongCard";
+import { UserTokenContext, URL } from '../globals/Context';
+import { WindowHeight, WindowWidth } from '../globals/Dimensions'
 
-import { UserTokenContext } from '../Context';
-import { URL } from "../Context";
-
-import { WindowHeight, WindowWidth } from '../Dimensions'
-
-const MyCoursesScreen = ({navigation}) => {
+export default ({navigation}) => {
   const { userToken } = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    getCourses()
+  }, []) 
+
     
   const getCourses = async() => {
     try {
@@ -55,6 +59,17 @@ const MyCoursesScreen = ({navigation}) => {
     }
   }
 
+  const renderHeader = () => {
+    return (
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
+        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24,}}>My Courses</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('All Courses')}>
+          <Text>View All Courses</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   const renderLoader = () => {
     if (isLoading) {
       return (
@@ -83,11 +98,14 @@ const MyCoursesScreen = ({navigation}) => {
       );
     }
   }
-    
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+      paddingTop: insets.top,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,}]}>
       <View style={{flex: 1, height: WindowHeight, width: WindowWidth}}>
-        <FlashList
+        <FlatList
           data={courses}
           renderItem={({item}) => {
             return(
@@ -104,8 +122,8 @@ const MyCoursesScreen = ({navigation}) => {
           numColumns={1}
           contentContainerStyle={{paddingHorizontal: 10}}
           keyExtractor={(item) => item.id}
-          estimatedItemSize={233}
           ListFooterComponent={renderLoader}
+          ListHeaderComponent={renderHeader}
           onEndReached={loadMoreItem}
           onEndReachedThreshold={0}
         />
@@ -117,7 +135,6 @@ const MyCoursesScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
     flexDirection: 'column',
   },
   input: {
@@ -137,10 +154,4 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     alignItems: 'center'
   },
-  clear: {
-    alignItems: 'flex-end',
-    marginRight: 20
-  }
 })
-
-export default MyCoursesScreen;

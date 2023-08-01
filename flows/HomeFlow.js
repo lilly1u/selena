@@ -1,25 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/HomeScreen';
 import ContactScreen from '../screens/ContactScreen';
 
-import { DisplayNameContext } from '../Context';
-
 export default () => {
-    const { displayName } = useContext(DisplayNameContext);
-    const name = displayName.split(' ');
-    let firstName = name[0];
-  
     const Stack = createStackNavigator();
     return (
       <Stack.Navigator 
-        screenOptions={styles.header}>
+        screenOptions={{headerShown: false}}>
         <Stack.Screen 
           name='HomeFlow'
           component={HomeScreen}
-          options={{title: 'Hello ' + firstName + '!'}}
         />
         <Stack.Screen
           name='Contact'

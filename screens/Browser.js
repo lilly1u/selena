@@ -2,9 +2,9 @@ import axios from 'axios'
 import React,{useEffect, useState, useContext} from 'react'
 import { View, Text, StyleSheet, Button} from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
-import { UserTokenContext, URL } from '../Context';
+import { UserTokenContext, URL } from '../globals/Context';
 
-const Browser = ({navigation, route}) => {
+export default ({navigation, route}) => {
     const { lessonId } = route.params
     const { userToken } = useContext(UserTokenContext);
 
@@ -53,12 +53,9 @@ const Browser = ({navigation, route}) => {
   )
 }
 
-export default Browser;
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
       paddingLeft: 20,
       paddingRight: 20
     },

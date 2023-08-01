@@ -1,17 +1,18 @@
-import { View, StyleSheet, ActivityIndicator, Pressable, Text } from "react-native";
-import React, { useContext, useState } from 'react';
-import { FlashList } from "@shopify/flash-list";
+import { View, StyleSheet, ActivityIndicator, Pressable, Text, FlatList } from "react-native";
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+
+import Header from '../components/Header';
 import Card from "../components/Card";
 import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
+import { UserTokenContext, URL } from '../globals/Context';
+import { WindowHeight, WindowWidth } from '../globals/Dimensions'
 
-import { UserTokenContext, URL } from '../Context';
-
-import { WindowHeight, WindowWidth } from '../Dimensions'
-
-const AllCourseScreen = ({navigation}) => {
+export default ({navigation}) => {
+  const insets = useSafeAreaInsets();
   const { userToken } = useContext(UserTokenContext);
 
   const [courses, setCourses] = useState([]);
@@ -22,6 +23,10 @@ const AllCourseScreen = ({navigation}) => {
   const [type, setType] = useState('');
   const [lang, setLang] = useState('');
   const [grade, setGrade] = useState('');
+
+  useEffect(() => {
+    getCourses()
+  }, [])
     
   const getCourses = async() => {
     try {
@@ -64,6 +69,41 @@ const AllCourseScreen = ({navigation}) => {
     }
   }
 
+  const renderHeader = () => {
+    return (
+      <View>
+        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24}}>All Courses</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          <DropdownComponent 
+            filter={TYPE}
+            placeholder='Type'
+            setType={setType}
+          />
+          <DropdownComponent
+            filter={LANG}
+            placeholder='Language'
+            setLang={setLang}
+          />
+          <DropdownComponent 
+            filter={GRADE}
+            placeholder='Grade'
+            setGrade={setGrade}
+          />
+        </View>
+        <Pressable
+          onPress={() => {
+            setType('');
+            setLang('');
+            setGrade('');
+          }}
+          style={styles.clear}
+          >
+          <Text style={{fontWeight: 'bold'}}>clear all</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
   const renderLoader = () => {
     if (isLoading) {
       return (
@@ -94,70 +134,38 @@ const AllCourseScreen = ({navigation}) => {
   })
     
   return (
-    <View style={styles.container}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-        <DropdownComponent 
-          filter={TYPE}
-          placeholder='Type'
-          setType={setType}
-        />
-        <DropdownComponent
-          filter={LANG}
-          placeholder='Language'
-          setLang={setLang}
-        />
-        <DropdownComponent 
-          filter={GRADE}
-          placeholder='Grade'
-          setGrade={setGrade}
-        />
-      </View>
-
-      <Pressable
-        onPress={() => {
-          setType('');
-          setLang('');
-          setGrade('');
+    <View style={[styles.container, {
+      paddingTop: insets.top,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,}]}>
+      <FlatList
+        data={listFiltered}
+        renderItem={({item}) => {
+          return(
+            <Card
+              onPress={() => getCourse(item)} 
+              style={styles.border}
+              title={item.name} 
+              instructor={item.instructor.name} 
+              image={{uri: item.image}}
+            />
+          )
         }}
-        style={styles.clear}
-        >
-        <Text style={{fontWeight: 'bold'}}>clear all</Text>
-      </Pressable>
-
-      <View style={{flex: 1, height: WindowHeight, width: WindowWidth}}>
-        <FlashList
-          data={listFiltered}
-          renderItem={({item}) => {
-            return(
-              <Card
-                onPress={() => getCourse(item)} 
-                style={styles.border}
-                title={item.name} 
-                instructor={item.instructor.name} 
-                image={{uri: item.image}}
-              />
-            )
-          }}
-          numColumns={2}
-          contentContainerStyle={{paddingHorizontal: 10}}
-          keyExtractor={(item) => item.id}
-          estimatedItemSize={233}
-          ListFooterComponent={renderLoader}
-          onEndReached={loadMoreItem}
-          onEndReachedThreshold={0}
-        />
-      </View>
-
+        numColumns={2}
+        contentContainerStyle={{paddingHorizontal: 10}}
+        keyExtractor={(item) => item.id}
+        ListFooterComponent={renderLoader}
+        ListHeaderComponent={renderHeader}
+        onEndReached={loadMoreItem}
+        onEndReachedThreshold={0}
+      />
     </View>
   )
 }
 
-export default AllCourseScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
     flexDirection: 'column',
   },
   input: {
@@ -174,7 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   loader: {
-    marginVertical: 16,
+    marginVertical: WindowHeight/2,
     alignItems: 'center'
   },
   clear: {

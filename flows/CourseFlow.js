@@ -8,28 +8,17 @@ import EnrollScreen from '../screens/EnrollScreen';
 import LessonsScreen from '../screens/LessonsScreen';
 import Browser from '../screens/Browser';
 
-export default CourseFlow = () => {
+export default () => {
     const Stack = createStackNavigator();
     return (
-      <Stack.Navigator screenOptions={styles.header}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="My Courses"
           component={MyCoursesScreen}
-          options={({ navigation }) => ({
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('All Courses')}
-                style={{marginRight: 20}}
-                >
-                <Text style={{color:'#8E8E8E', fontWeight: '600'}}>View all courses</Text>
-              </TouchableOpacity>
-            )
-          })}
         />
         <Stack.Screen
           name="All Courses"
           component={AllCourseScreen}
-          options={{headerLeft: false}}
         />
         <Stack.Screen
           name="Enroll"

@@ -2,9 +2,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
-import { URL, UserTokenContext } from '../Context';
+import { URL, UserTokenContext } from '../globals/Context';
 
-const EnrollScreen = ({navigation, route}) => {
+export default ({navigation, route}) => {
     const { course } = route.params;
     const { userToken } = useContext(UserTokenContext);
     const [isLoading, setIsLoading] = useState(false);
@@ -55,12 +55,9 @@ const EnrollScreen = ({navigation, route}) => {
     );
 }
 
-export default EnrollScreen;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
         padding: 20
     },
     enroll: {

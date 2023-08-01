@@ -1,11 +1,10 @@
 import axios from 'axios'
 import React,{ useState, useEffect, useContext } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { WindowHeight, WindowWidth } from '../Dimensions'
-import { UserTokenContext } from '../Context'
-import { URL } from '../Context'
+import { WindowWidth } from '../globals/Dimensions'
+import { UserTokenContext, URL } from '../globals/Context'
 
-const LessonsScreen = ({navigation, route}) => {
+export default ({navigation, route}) => {
     const { courseId, courseName } = route.params
     const { userToken } = useContext(UserTokenContext);
 
@@ -66,12 +65,9 @@ const LessonsScreen = ({navigation, route}) => {
   )
 }
 
-export default LessonsScreen;
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
     },
     lesson: {
       fontSize: 15,
