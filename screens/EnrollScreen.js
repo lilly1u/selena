@@ -2,10 +2,10 @@ import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert} from 'reac
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import WebView from "react-native-webview";
+import RenderHtml from 'react-native-render-html';
 
 import { URL, UserTokenContext } from '../globals/Context';
-import { WindowHeight } from '../globals/Dimensions';
+import { WindowHeight, WindowWidth } from '../globals/Dimensions';
 
 export default ({navigation, route}) => {
     const insets = useSafeAreaInsets();
@@ -42,23 +42,24 @@ export default ({navigation, route}) => {
         }
     };
 
+    const source = {
+        html: `${overview}`
+      };
+
     return (
         <ScrollView>
-        <View style={[styles.container, {
-            paddingTop: insets.top,
-            paddingLeft: insets.left,
-            paddingRight: insets.right,}]}>
-            <View>
-                <Text style={styles.courseTitle}>{courseName}</Text>
-                <Text>
-                Instructor: {instructor}{'\n'}
-                Categories: {categories}{'\n'}
-                Duration: {duration}{'\n'}
-                Lessons: {lessons}{'\n'}
-                Students: {students}{'\n'}
-                </Text>
-            </View>
-            <Text>{overview}</Text>
+        <View style={styles.info}>
+            <Text style={styles.courseTitle}>{courseName}</Text>
+            <Text style={styles.instructor}>{instructor}</Text>
+            <View style={styles.divider}/>
+            <Text style={{color: 'white'}}>
+            Categories: {categories}{'\n'}
+            Duration: {duration}{'\n'}
+            Lessons: {lessons}{'\n'}
+            Students: {students}{'\n'}
+            </Text>
+        </View>
+        <View style={styles.container}>
             <View style={{alignItems: 'center'}}>
                 <TouchableOpacity 
                     style={styles.button}
@@ -68,6 +69,11 @@ export default ({navigation, route}) => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <Text style={styles.courseTitle}>Overview</Text>
+            <RenderHtml
+                contentWidth={WindowWidth}
+                source={source}
+            />
         </View>
         </ScrollView>
     );
@@ -82,9 +88,13 @@ const styles = StyleSheet.create({
     enroll: {
         color: '#fff' 
     },
+    info: {
+        padding: 20,
+        backgroundColor: '#442E66'
+    },
     button: {
+        margin: 10,
         backgroundColor: '#202020',
-        position: 'absolute',
         borderRadius: 8,
         height: 50,
         width: 250,
@@ -95,5 +105,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         color: '#FFC700',
+    },
+    instructor: {
+        fontWeight: 'normal',
+        fontSize: 15,
+        color: '#89D1F5',
+    },
+    divider: {
+        borderWidth: .5,
+        borderColor: '#fff',
     }
 });

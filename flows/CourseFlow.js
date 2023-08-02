@@ -11,14 +11,16 @@ import Browser from '../screens/Browser';
 export default () => {
     const Stack = createStackNavigator();
     return (
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator>
         <Stack.Screen
           name="My Courses"
           component={MyCoursesScreen}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="All Courses"
           component={AllCourseScreen}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="Enroll"
@@ -40,20 +42,11 @@ export default () => {
 }
 
 const styles = StyleSheet.create({
-    header: {
-      headerShown: true, 
-      headerTitleAlign: 'left',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        color: '#FFC700',
-        fontSize: 24,
-      },
-      headerShadowVisible: false,
-    },
     back: {
       headerTitle: '', 
-      headerBackTitle: 'back', 
-      headerBackTitleVisible: true, 
-      headerTintColor: '#8E8E8E'
+      headerBackTitle: 'Back', 
+      headerBackTitleVisible: true,
+      headerShadowVisible: false,
+      headerTintColor: '#8E8E8E',
     },
   });

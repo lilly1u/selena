@@ -1,17 +1,20 @@
 import axios from 'axios'
 import React,{ useState, useEffect, useContext } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as WebBrowser from 'expo-web-browser'
 
 import { WindowWidth } from '../globals/Dimensions'
 import { UserTokenContext, URL } from '../globals/Context'
 
 export default ({navigation, route}) => {
-    const insets = useSafeAreaInsets();
     const { courseId, courseName } = route.params
     const { userToken } = useContext(UserTokenContext);
 
     const [lessons, setLessons] = useState([]);
+
+    useEffect(() => {
+        getLessons();
+    }, [])
 
     const getLessons = async() => {
         try {
@@ -32,31 +35,36 @@ export default ({navigation, route}) => {
             console.log(error)
         }
     }
-    
-    useEffect(() => {
-        getLessons();
-    }, [])
 
-    const goToLesson = async(lesson) =>{
+    const extractDownloadLink = (content) => {
+        const start = content.indexOf('href=') + 6;
+        const end = content.indexOf('download><') - 2;
+        const string = content.substring(start,end);
+        return string;
+    };
+
+    const getPdf = async(lesson) => {
         try {
-            navigation.navigate('Browser', {lessonId: lesson.id})
+            const response = await axios.get(`${URL}/wp-json/learnpress/v1/lessons/${lesson.id}`,{
+                headers: {
+                    Authorization: `Bearer ${userToken}`
+                }
+            })
+            const result = await WebBrowser.openBrowserAsync(extractDownloadLink(response.data.content))
         } catch (error) {
             console.log(error)
         }
     }
-    
+
   return (
-    <View style={[styles.container, {
-        paddingTop: insets.top,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,}]}>
+    <View style={styles.container}>
             <Text style={styles.name}>{courseName}</Text>
         <FlatList
             data={lessons}
             renderItem={({item}) => {
                 return(
                     <TouchableOpacity
-                        onPress={() => goToLesson(item)}
+                        onPress={() => getPdf(item)}
                         >
                         <View style={styles.lesson}>
                             <Text style={{fontWeight: 'bold', color: '#202020', textAlign: 'left',}}>{item.title}</Text>
