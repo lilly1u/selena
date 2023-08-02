@@ -62,7 +62,7 @@ export default ({navigation}) => {
   const renderHeader = () => {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
-        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24,}}>My Courses</Text>
+        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24}}>My Courses</Text>
         <TouchableOpacity onPress={() => navigation.navigate('All Courses')}>
           <Text>View All Courses</Text>
         </TouchableOpacity>
@@ -120,7 +120,7 @@ export default ({navigation}) => {
             )
           }}
           numColumns={1}
-          contentContainerStyle={{paddingHorizontal: 10}}
+          contentContainerStyle={{marginLeft: 20, marginRight: 20}}
           keyExtractor={(item) => item.id}
           ListFooterComponent={renderLoader}
           ListHeaderComponent={renderHeader}

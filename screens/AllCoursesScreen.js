@@ -3,13 +3,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
-import Header from '../components/Header';
 import Card from "../components/Card";
 import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
 import { UserTokenContext, URL } from '../globals/Context';
-import { WindowHeight, WindowWidth } from '../globals/Dimensions'
+import { WindowWidth } from '../globals/Dimensions'
 
 export default ({navigation}) => {
   const insets = useSafeAreaInsets();
@@ -72,8 +70,8 @@ export default ({navigation}) => {
   const renderHeader = () => {
     return (
       <View>
-        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24}}>All Courses</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24, marginBottom: 20}}>All Courses</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <DropdownComponent 
             filter={TYPE}
             placeholder='Type'
@@ -152,7 +150,7 @@ export default ({navigation}) => {
           )
         }}
         numColumns={2}
-        contentContainerStyle={{paddingHorizontal: 10}}
+        contentContainerStyle={{marginLeft: 20, marginRight: 20}}
         keyExtractor={(item) => item.id}
         ListFooterComponent={renderLoader}
         ListHeaderComponent={renderHeader}
@@ -182,12 +180,12 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   loader: {
-    marginVertical: WindowHeight/2,
+    marginVertical: 16,
     alignItems: 'center'
   },
   clear: {
     alignItems: 'flex-end',
-    marginRight: 20
+    marginBottom: 10
   }
 })
 

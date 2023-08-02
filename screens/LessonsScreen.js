@@ -1,10 +1,13 @@
 import axios from 'axios'
 import React,{ useState, useEffect, useContext } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { WindowWidth } from '../globals/Dimensions'
 import { UserTokenContext, URL } from '../globals/Context'
 
 export default ({navigation, route}) => {
+    const insets = useSafeAreaInsets();
     const { courseId, courseName } = route.params
     const { userToken } = useContext(UserTokenContext);
 
@@ -43,7 +46,10 @@ export default ({navigation, route}) => {
     }
     
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+        paddingTop: insets.top,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,}]}>
             <Text style={styles.name}>{courseName}</Text>
         <FlatList
             data={lessons}

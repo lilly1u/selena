@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 
 export default ({title, instructor, image, onPress}) => {
@@ -17,8 +17,8 @@ export default ({title, instructor, image, onPress}) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        marginBottom: 20,
-        marginLeft: 10,
+        marginRight: 20,
+        marginBottom: 20, 
     },
     card: {
         width: 165,

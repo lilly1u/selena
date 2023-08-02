@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         marginBottom: 20,
-        marginLeft: 10,
     },
     card: {
         width: 350,

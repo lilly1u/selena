@@ -1,10 +1,15 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import WebView from "react-native-webview";
 
 import { URL, UserTokenContext } from '../globals/Context';
+import { WindowHeight } from '../globals/Dimensions';
 
 export default ({navigation, route}) => {
+    const insets = useSafeAreaInsets();
+
     const { course } = route.params;
     const { userToken } = useContext(UserTokenContext);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +20,9 @@ export default ({navigation, route}) => {
     const duration = course.duration;
     const lessons = course.course_data.result.count_items;
     const students = course.count_students;
-
+    const categories = course.categories[0].name;
+    const overview = course.content;
+    
     const enroll = async() => {
         try {
 
@@ -36,40 +43,53 @@ export default ({navigation, route}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.courseTitle}>{courseName}</Text>
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={() => enroll()}>
-                <Text style={styles.enroll}>
-                Start Now
-                </Text>
-            </TouchableOpacity>
-            <Text>
+        <ScrollView>
+        <View style={[styles.container, {
+            paddingTop: insets.top,
+            paddingLeft: insets.left,
+            paddingRight: insets.right,}]}>
+            <View>
+                <Text style={styles.courseTitle}>{courseName}</Text>
+                <Text>
                 Instructor: {instructor}{'\n'}
+                Categories: {categories}{'\n'}
                 Duration: {duration}{'\n'}
                 Lessons: {lessons}{'\n'}
                 Students: {students}{'\n'}
-            </Text>
+                </Text>
+            </View>
+            <Text>{overview}</Text>
+            <View style={{alignItems: 'center'}}>
+                <TouchableOpacity 
+                    style={styles.button}
+                    onPress={() => enroll()}>
+                    <Text style={styles.enroll}>
+                    Start Now
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        marginLeft: 20,
+        marginRight: 20
     },
     enroll: {
         color: '#fff' 
     },
     button: {
         backgroundColor: '#202020',
+        position: 'absolute',
         borderRadius: 8,
         height: 50,
         width: 250,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     courseTitle: {
         fontWeight: 'bold',
