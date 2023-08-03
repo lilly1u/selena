@@ -1,7 +1,7 @@
 import { StyleSheet, View, Image, TextInput } from 'react-native';
 import { useState } from 'react';
 
-const Input = ({title, icon, style, width, value, onChangeText}) => {
+const Input = ({title, icon, style, width, value}) => {
     const [text, setText] = useState('');
     return(
       <View style={[styles.inputContainer, style]}>
