@@ -1,8 +1,9 @@
-import { View, StyleSheet, ActivityIndicator, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ActivityIndicator, FlatList, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import Header from "../components/Header";
 import LongCard from "../components/LongCard";
 import { UserTokenContext, URL } from '../globals/Context';
 import { WindowHeight, WindowWidth } from '../globals/Dimensions'
@@ -61,8 +62,8 @@ export default ({navigation}) => {
 
   const renderHeader = () => {
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
-        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24}}>My Courses</Text>
+      <View style={styles.header}>
+        <Header title='My Courses' style={{marginBottom: 0}}/>
         <TouchableOpacity onPress={() => navigation.navigate('All Courses')}>
           <Text>View All Courses</Text>
         </TouchableOpacity>
@@ -104,7 +105,7 @@ export default ({navigation}) => {
       paddingTop: insets.top,
       paddingLeft: insets.left,
       paddingRight: insets.right,}]}>
-      <View style={{flex: 1, height: WindowHeight, width: WindowWidth}}>
+      <ScrollView>
         <FlatList
           data={courses}
           renderItem={({item}) => {
@@ -126,8 +127,9 @@ export default ({navigation}) => {
           ListHeaderComponent={renderHeader}
           onEndReached={loadMoreItem}
           onEndReachedThreshold={0}
+          scrollEnabled={false}
         />
-      </View>
+      </ScrollView>
     </View>
   )
 }
@@ -137,15 +139,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  input: {
-    fontSize: 24,
-    padding: 20,
-    textAlign: 'center',
-    width: WindowWidth * 0.9,
-    backgroundColor: '#67aaf9',
-    fontWeight: 'bold',
-    color: '#fdf7fa',
-    marginBottom: 8
+  header: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: 20
   },
   border: {
     borderRadius: 30

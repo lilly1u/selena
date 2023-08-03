@@ -1,13 +1,15 @@
-import { View, StyleSheet, ActivityIndicator, Pressable, Text, FlatList } from "react-native";
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Text, FlatList } from "react-native";
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import Header from "../components/Header";
 import Card from "../components/Card";
 import DropdownComponent from "../components/Dropdown";
 import { TYPE, LANG, GRADE } from "../components/Filters"
 import { UserTokenContext, URL } from '../globals/Context';
 import { WindowWidth } from '../globals/Dimensions'
+import { ScrollView } from "react-native-gesture-handler";
 
 export default ({navigation}) => {
   const insets = useSafeAreaInsets();
@@ -67,41 +69,6 @@ export default ({navigation}) => {
     }
   }
 
-  const renderHeader = () => {
-    return (
-      <View>
-        <Text style={{fontWeight: 'bold', color: '#FFC700', fontSize: 24, marginBottom: 20}}>All Courses</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <DropdownComponent 
-            filter={TYPE}
-            placeholder='Type'
-            setType={setType}
-          />
-          <DropdownComponent
-            filter={LANG}
-            placeholder='Language'
-            setLang={setLang}
-          />
-          <DropdownComponent 
-            filter={GRADE}
-            placeholder='Grade'
-            setGrade={setGrade}
-          />
-        </View>
-        <Pressable
-          onPress={() => {
-            setType('');
-            setLang('');
-            setGrade('');
-          }}
-          style={styles.clear}
-          >
-          <Text style={{fontWeight: 'bold'}}>clear all</Text>
-        </Pressable>
-      </View>
-    );
-  }
-
   const renderLoader = () => {
     if (isLoading) {
       return (
@@ -135,28 +102,61 @@ export default ({navigation}) => {
     <View style={[styles.container, {
       paddingTop: insets.top,
       paddingLeft: insets.left,
-      paddingRight: insets.right,}]}>
-      <FlatList
-        data={listFiltered}
-        renderItem={({item}) => {
-          return(
-            <Card
-              onPress={() => getCourse(item)} 
-              style={styles.border}
-              title={item.name} 
-              instructor={item.instructor.name} 
-              image={{uri: item.image}}
+      paddingRight: insets.right,
+      }]}>
+      <ScrollView>
+        <View style={styles.header}>
+          <Header title='All Courses'/>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <DropdownComponent 
+              filter={TYPE}
+              placeholder='Type'
+              setType={setType}
             />
-          )
-        }}
-        numColumns={2}
-        contentContainerStyle={{marginLeft: 20, marginRight: 20}}
-        keyExtractor={(item) => item.id}
-        ListFooterComponent={renderLoader}
-        ListHeaderComponent={renderHeader}
-        onEndReached={loadMoreItem}
-        onEndReachedThreshold={0}
-      />
+            <DropdownComponent
+              filter={LANG}
+              placeholder='Language'
+              setLang={setLang}
+            />
+            <DropdownComponent 
+              filter={GRADE}
+              placeholder='Grade'
+              setGrade={setGrade}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setType('');
+              setLang('');
+              setGrade('');
+            }}
+            style={styles.clear}
+            >
+            <Text>clear all</Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={listFiltered}
+          renderItem={({item}) => {
+            return(
+              <Card
+                onPress={() => getCourse(item)} 
+                style={styles.border}
+                title={item.name} 
+                instructor={item.instructor.name} 
+                image={{uri: item.image}}
+              />
+            )
+          }}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          ListFooterComponent={renderLoader}
+          contentContainerStyle={{marginLeft: 20, marginRight: 20}}
+          onEndReached={loadMoreItem}
+          onEndReachedThreshold={0}
+          scrollEnabled={false}
+        />
+      </ScrollView>
     </View>
   )
 }
@@ -166,15 +166,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  input: {
-    fontSize: 24,
-    padding: 20,
-    textAlign: 'center',
-    width: WindowWidth * 0.9,
-    backgroundColor: '#67aaf9',
-    fontWeight: 'bold',
-    color: '#fdf7fa',
-    marginBottom: 8
+  header: {
+    paddingRight: 20, 
+    paddingLeft: 20
   },
   border: {
     borderRadius: 30

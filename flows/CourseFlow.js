@@ -6,7 +6,6 @@ import MyCoursesScreen from '../screens/MyCoursesScreen';
 import AllCourseScreen from '../screens/AllCoursesScreen';
 import EnrollScreen from '../screens/EnrollScreen';
 import LessonsScreen from '../screens/LessonsScreen';
-import Browser from '../screens/Browser';
 
 export default () => {
     const Stack = createStackNavigator();
@@ -30,11 +29,6 @@ export default () => {
         <Stack.Screen
           name="Lessons"
           component={LessonsScreen}
-          options={styles.back}
-        />
-        <Stack.Screen
-          name="Browser"
-          component={Browser}
           options={styles.back}
         />
       </Stack.Navigator>

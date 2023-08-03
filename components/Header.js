@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet } from "react-native"
 
-export default ({title}) => {
+export default ({title, style}) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             <Text style={styles.title}>
                 {title}
             </Text>
@@ -12,7 +12,6 @@ export default ({title}) => {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'flex-start',
         marginBottom: 20
     },
     title: {
