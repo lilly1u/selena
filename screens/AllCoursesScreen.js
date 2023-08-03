@@ -149,6 +149,7 @@ export default ({navigation}) => {
             )
           }}
           numColumns={2}
+          initialNumToRender={6}
           keyExtractor={(item) => item.id}
           ListFooterComponent={renderLoader}
           contentContainerStyle={{marginLeft: 20, marginRight: 20}}
