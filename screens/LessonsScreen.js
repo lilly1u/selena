@@ -1,16 +1,17 @@
-import axios from 'axios'
-import React,{ useState, useEffect, useContext } from 'react'
-import { View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import * as WebBrowser from 'expo-web-browser'
+import axios from 'axios';
+import React,{ useState, useEffect, useContext } from 'react';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
 
-import { WindowWidth } from '../globals/Dimensions'
-import { UserTokenContext, URL } from '../globals/Context'
+import Lesson from '../components/Lesson';
+import { WindowWidth } from '../globals/Dimensions';
+import { UserTokenContext, URL } from '../globals/Context';
 
 export default ({navigation, route}) => {
     const { courseId, courseName } = route.params
     const { userToken } = useContext(UserTokenContext);
 
     const [lessons, setLessons] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         getLessons();
@@ -20,6 +21,7 @@ export default ({navigation, route}) => {
         try {
             console.log('Course ID: ', courseId);
             console.log('Course Name: ', courseName);
+            setIsLoading(true);
             const response = await axios.get(`${URL}/wp-json/learnpress/v1/courses/${courseId}`,{
                 headers:{
                     Authorization: `Bearer ${userToken}`
@@ -30,53 +32,44 @@ export default ({navigation, route}) => {
             } else {
                 const lessonsResponse = response.data.sections[0].items;
                 setLessons(lessonsResponse);
-            }            
+            }
+            setIsLoading(false);           
         } catch (error) {
+            setIsLoading(false); 
             console.log(error)
         }
     }
 
-    const extractDownloadLink = (content) => {
-        const start = content.indexOf('href=') + 6;
-        const end = content.indexOf('download><') - 2;
-        const string = content.substring(start,end);
-        return string;
-    };
-
-    const getPdf = async(lesson) => {
+    const goToLesson = (lesson) => {
         try {
-            const response = await axios.get(`${URL}/wp-json/learnpress/v1/lessons/${lesson.id}`,{
-                headers: {
-                    Authorization: `Bearer ${userToken}`
-                }
-            })
-            const result = await WebBrowser.openBrowserAsync(extractDownloadLink(response.data.content))
+            navigation.navigate('Lesson', {lessonId: lesson.id})
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
-
-  return (
-    <View style={styles.container}>
-            <Text style={styles.name}>{courseName}</Text>
-        <FlatList
-            data={lessons}
-            renderItem={({item}) => {
-                return(
-                    <TouchableOpacity
-                        onPress={() => getPdf(item)}
-                        >
-                        <View style={styles.lesson}>
-                            <Text style={{fontWeight: 'bold', color: '#202020', textAlign: 'left',}}>{item.title}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )
-            }}
-            contentContainerStyle={{alignItems: 'center',}}
-        />
-    </View>
-
-  )
+    
+    if (isLoading) {
+        return (
+            <View style={styles.loader}>
+              <ActivityIndicator size='large' color='#aaa'/>
+            </View>
+        );
+    } else {
+        return (
+            <View style={styles.container}>
+                    <Text style={styles.name}>{courseName}</Text>
+                <FlatList
+                    data={lessons}
+                    renderItem={({item}) => {
+                        return(
+                            <Lesson title={item.title} onPress={() => goToLesson(item)} completed={item.status}/>
+                        )
+                    }}
+                    contentContainerStyle={{alignItems: 'center',}}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -104,5 +97,9 @@ const styles = StyleSheet.create({
     },
     border: {
       borderRadius: 30
-    }
+    },
+    loader: {
+        marginVertical: 16,
+        alignItems: 'center'
+      },
   })
