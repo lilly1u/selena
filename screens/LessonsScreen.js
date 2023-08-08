@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React,{ useState, useEffect, useContext } from 'react';
-import { View, FlatList, Text, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
-
+import React,{ useState, useEffect, useContext, useCallback } from 'react';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Lesson from '../components/Lesson';
 import { WindowWidth } from '../globals/Dimensions';
 import { UserTokenContext, URL } from '../globals/Context';
@@ -13,9 +13,12 @@ export default ({navigation, route}) => {
     const [lessons, setLessons] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        getLessons();
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            getLessons();
+            return () => getLessons();
+        }, [navigation])
+    );
 
     const getLessons = async() => {
         try {
@@ -42,7 +45,7 @@ export default ({navigation, route}) => {
 
     const goToLesson = (lesson) => {
         try {
-            navigation.navigate('Lesson', {lessonId: lesson.id})
+            navigation.navigate('Lesson', {lessonId: lesson.id, courseId, courseName})
         } catch (error) {
             console.log(error);
         }
@@ -57,7 +60,7 @@ export default ({navigation, route}) => {
     } else {
         return (
             <View style={styles.container}>
-                    <Text style={styles.name}>{courseName}</Text>
+                    
                 <FlatList
                     data={lessons}
                     renderItem={({item}) => {
@@ -65,7 +68,10 @@ export default ({navigation, route}) => {
                             <Lesson title={item.title} onPress={() => goToLesson(item)} completed={item.status}/>
                         )
                     }}
-                    contentContainerStyle={{alignItems: 'center',}}
+                    contentContainerStyle={{alignItems: 'center'}}
+                    ListHeaderComponent={() => {return(
+                        <Text style={styles.name}>{courseName}</Text>
+                    )}}
                 />
             </View>
         );
@@ -93,7 +99,6 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: '#FFC700',
       paddingBottom: 10,
-      paddingLeft: 20
     },
     border: {
       borderRadius: 30

@@ -1,18 +1,27 @@
 import axios from 'axios'
-import React,{useEffect, useState, useContext} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
+import React,{ useEffect, useState, useContext, useCallback } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native';
 import {WebView} from 'react-native-webview'
 import * as WebBrowser from 'expo-web-browser'
 import { UserTokenContext, URL } from '../globals/Context';
 import { WindowWidth } from '../globals/Dimensions';
 
 export default ({navigation, route}) => {
-    const { lessonId } = route.params
+    const { lessonId, courseId, courseName } = route.params;
     const { userToken } = useContext(UserTokenContext);
 
-    const [lesson, setLesson] = useState({})
-    const [pdfLink, setPdfLink] = useState('')
-    const [pdf, setPdf] = useState()
+    const [lesson, setLesson] = useState({});
+    const [pdfLink, setPdfLink] = useState('');
+    const [pdf, setPdf] = useState();
+    const [status, setStatus] = useState('');
+
+    useFocusEffect(
+        useCallback(() => {
+            getLesson();
+            return () => getLesson();
+        }, [navigation])
+    )
 
     const getLesson = async() => {
         try {
@@ -23,14 +32,15 @@ export default ({navigation, route}) => {
             })
             setPdfLink(extractDownloadLink(response.data.content))
             setLesson(response.data)
+            if (response.data.results.status == 'completed') {
+                setStatus('Completed')
+            } else {
+                setStatus('Complete')
+            }
         } catch (error) {
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        getLesson()
-    },[])
 
     const extractDownloadLink = (content) => {
         const start = content.indexOf('href=') + 6;
@@ -45,13 +55,18 @@ export default ({navigation, route}) => {
     }
 
     const completeLesson = async() => {
-        try {
-            const response = await axios.get(`${URL}/wp-json/learnpress/v1/lessons/finish`, {
-                id: lessonId
-            })
-            console.log(response);
-        } catch (error) {
-            console.log(error);
+        if (status == 'Complete') {
+            try {
+                const response = await axios.post(`${URL}/wp-json/learnpress/v1/lessons/finish`, {id: lessonId}, {
+                    headers:{
+                      Authorization: `Bearer ${userToken}`
+                    }
+                });
+                console.log(response.data.message);
+                navigation.navigate('Lessons', courseId, courseName)
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
       
@@ -67,7 +82,7 @@ export default ({navigation, route}) => {
                 <Text style={styles.text}>Download File</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {borderColor: '#000'}]} onPress={completeLesson}>
-                <Text style={[styles.text, {color: '#000'}]}>Complete</Text>
+                <Text style={[styles.text, {color: '#000'}]}>{status}</Text>
             </TouchableOpacity>
         </View>
     </View>
