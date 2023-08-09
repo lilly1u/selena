@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { TYPE, GRADE, LANG } from './Filters';
 
-const DropdownComponent = ({filter, placeholder, setType, setLang, setGrade, clear, setClear}) => {
+const DropdownComponent = ({filter, placeholder, setType, setLang, setGrade, clear,}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+
+
+  useEffect(() => {
+    if (clear) {
+      if (filter && filter.length > 0) {
+        setValue(filter[0].value);
+      }
+      
+      // Call the onClearComplete function to reset the clear state in the parent component
+      
+    }
+  }, [clear, filter]);
+  
 
   return (
     <View style={styles.container}>
