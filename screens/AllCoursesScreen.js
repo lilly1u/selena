@@ -11,6 +11,7 @@ import { UserTokenContext, URL } from '../globals/Context';
 import { WindowWidth } from '../globals/Dimensions'
 import { ScrollView } from "react-native-gesture-handler";
 
+
 export default ({navigation}) => {
   const insets = useSafeAreaInsets();
   const { userToken } = useContext(UserTokenContext);
@@ -23,6 +24,16 @@ export default ({navigation}) => {
   const [type, setType] = useState('');
   const [lang, setLang] = useState('');
   const [grade, setGrade] = useState('');
+  const [clear, setClear] = useState(false);
+  const [child1ComponentKey, setChild1ComponentKey] = useState(0);
+  const [child2ComponentKey, setChild2ComponentKey] = useState(1);
+  const [child3ComponentKey, setChild3ComponentKey] = useState(2);
+
+  const handleChangeText = () => {
+    setChild1ComponentKey(child1ComponentKey + 1);
+    setChild2ComponentKey(child2ComponentKey + 1);
+    setChild3ComponentKey(child3ComponentKey + 1);
+  };
 
   useEffect(() => {
     getCourses()
@@ -112,16 +123,27 @@ export default ({navigation}) => {
               filter={TYPE}
               placeholder='Type'
               setType={setType}
+              clear={clear}
+              key={child1ComponentKey}
+              
+          
             />
             <DropdownComponent
               filter={LANG}
               placeholder='Language'
               setLang={setLang}
+              clear={clear}
+              key={child2ComponentKey}
+              
+             
             />
             <DropdownComponent 
               filter={GRADE}
               placeholder='Grade'
               setGrade={setGrade}
+              clear={clear}
+              key={child3ComponentKey}
+             
             />
           </View>
           <TouchableOpacity
@@ -129,6 +151,11 @@ export default ({navigation}) => {
               setType('');
               setLang('');
               setGrade('');
+              setClear(true);
+              handleChangeText();
+              
+             
+
             }}
             style={styles.clear}
             >
@@ -183,4 +210,5 @@ const styles = StyleSheet.create({
     marginBottom: 10
   }
 })
+
 
