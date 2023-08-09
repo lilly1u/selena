@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { useFocusEffect } from '@react-navigation/native';
 import {WebView} from 'react-native-webview'
 import * as WebBrowser from 'expo-web-browser'
+import ShortButton from '../components/ShortButton';
 import { UserTokenContext, URL } from '../globals/Context';
 import { WindowWidth } from '../globals/Dimensions';
 
@@ -69,7 +70,7 @@ export default ({navigation, route}) => {
             }
         }
     }
-      
+
     return (
     <View style={styles.container}>
         <Text style={styles.name}>{lesson.name}</Text>
@@ -78,12 +79,8 @@ export default ({navigation, route}) => {
             source={{ uri: pdfLink }}
         />
         <View style={styles.buttons}>
-            <TouchableOpacity style={styles.button} onPress={getPdf}>
-                <Text style={styles.text}>Download File</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, {borderColor: '#000'}]} onPress={completeLesson}>
-                <Text style={[styles.text, {color: '#000'}]}>{status}</Text>
-            </TouchableOpacity>
+            <ShortButton title='Download File' onPress={getPdf}/>
+            <ShortButton title={status} status={status} onPress={completeLesson}/>
         </View>
     </View>
     )
@@ -107,17 +104,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         paddingTop: 20
-    },
-    button: {
-        height: 50,
-        width: WindowWidth/3,
-        borderRadius: 8,
-        marginBottom: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: '#cc3464',
-        borderWidth: 1,
-        backgroundColor: '#fff'
     },
     text: {
         color: '#cc3464'
